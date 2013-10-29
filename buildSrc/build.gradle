@@ -1,0 +1,8 @@
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.eclipse.jetty:jetty-server:9.0.6.v20130930'
+    compile 'org.eclipse.jetty:jetty-webapp:9.0.6.v20130930'
+}

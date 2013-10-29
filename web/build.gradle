@@ -1,0 +1,17 @@
+project(':web') {
+    evaluationDependsOn(':core')
+
+    apply plugin: 'war'
+
+    dependencies {
+        providedCompile project(':core')
+
+        testCompile 'org.jbehave:jbehave-core:3.8'
+        testCompile 'org.jbehave.web:jbehave-web-selenium:3.6-beta-1'
+    }
+
+    test {
+        dependsOn ":runJettyNoWait"
+    }
+
+}

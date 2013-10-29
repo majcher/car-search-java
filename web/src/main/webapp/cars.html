@@ -1,0 +1,45 @@
+
+<div class="panel panel-default" ng-show="cars.length > 0">
+	<div class="panel-heading">
+		<h4>Search</h4>
+	</div>
+	<div class="panel-body">
+		<div class="input-append">
+			<input id="search-input" class="span2" type="text" ng-model="carName" required min="1" />
+			<button id="search-button" class="btn btn-primary" ng-disabled="!carName" ng-click="search(carName)">Search</button>
+		</div>
+	</div>
+</div>
+
+<div class="alert alert-info" ng-show="cars.length == 0">
+    No cars found
+</div>
+
+<div class="panel panel-default" ng-show="cars.length > 0">
+	<div class="panel-heading">
+		<h4>Car list</h4>
+	</div>
+	<div class="panel-body">
+		<div class="text-right">
+			<span>Found {{cars.length}} cars</span>
+		</div>
+	</div>
+	<div class="list-group">
+		<div ng-repeat="car in cars" class="list-group-item">
+			<div class="row">
+				<div class="col-md-2">
+					<img class="car-image img-rounded img-responsive" src="http://i.ebayimg.com/00/s/NDgwWDY0MA==/$(KGrHqZHJCIFIfcDsZHvBSLcb8NR3g~~48_1.JPG"/>
+				</div>
+				<div class="col-md-6">
+					<span class="car-make">{{car.make}} {{car.model}}</span>
+				</div>
+				<div class="col-md-2">
+					<span class="car-color">{{car.color}}</span>
+				</div>
+				<div class="col-md-2">
+					<span class="car-price">{{car.price.value}} {{car.price.currency}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

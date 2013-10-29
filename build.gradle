@@ -1,0 +1,51 @@
+repositories {
+	mavenCentral()
+}
+	
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+}
+
+subprojects {
+	ext {
+	    sourceCompatibility = JavaVersion.VERSION_1_7
+    	targetCompatibility = JavaVersion.VERSION_1_7
+    }
+
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+	
+    sourceSets {
+        test {
+            output.classesDir = "build/test/classes"
+            output.resourcesDir = "build/test/classes"
+        }
+    }
+
+    test {
+        afterTest { descriptor, result ->
+            logger.lifecycle("Executing test ${descriptor.name} [${descriptor.className}] - ${result.resultType}")
+        }
+    }
+}
+
+def runJettyConfig = {
+    dependsOn = [":core:war", ":web:war"]
+
+    wars = ["/core" : "./core/build/libs/core.war"]
+    resources = ["/" : "./web/src/main/webapp/"]
+}
+
+task runJetty(type: RunJettyTask) {
+    configure runJettyConfig
+    join = true
+}
+
+task runJettyNoWait(type: RunJettyTask) {
+    configure runJettyConfig
+    join = false
+}

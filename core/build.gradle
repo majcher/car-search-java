@@ -1,0 +1,27 @@
+project(':core') {
+	apply plugin: 'war'
+
+	ext {
+		springVersion = "3.2.2.RELEASE"
+		jacksonVersion = "1.9.13"
+        guavaVersion = "15.0";
+	}
+
+	dependencies {
+		providedCompile 'javax.servlet:servlet-api:2.5'
+		
+		compile "org.springframework:spring-core:$springVersion"
+		compile "org.springframework:spring-web:$springVersion"
+		compile "org.springframework:spring-webmvc:$springVersion"		
+		compile "org.codehaus.jackson:jackson-mapper-asl:$jacksonVersion"
+
+        compile "com.google.guava:guava:$guavaVersion"
+		
+		testCompile "org.springframework:spring-test:$springVersion"
+		testCompile 'org.mockito:mockito-all:1.9.5'
+		testCompile 'org.easytesting:fest-assert-core:2.0M10'
+		testCompile 'org.testng:testng:6.8.5'
+		testCompile 'nl.jqno.equalsverifier:equalsverifier:1.3.1'
+	}
+
+}
