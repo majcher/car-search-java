@@ -9,15 +9,25 @@
 <body>
 	<div id="wrapper">
 
+		<div loader class="dim">
+			<div class="spinner">
+				<span us-spinner="{color: '#fff'}"></span>
+			</div>
+		</div>
+
 	    <div ng-view></div>
 
 	</div>
 
+	<script src="jquery/jquery-2.0.3.min.js"></script>
 	<script src="angular/js/angular.js"></script>
 	<script src="carsearch/js/app.js"></script>
 	<script src="carsearch/js/services.js"></script>
 	<script src="carsearch/js/controller/CarController.js"></script>
 	<script src="carsearch/js/filters.js"></script>
 	<script src="carsearch/js/directives.js"></script>
+	<script src="spinner/js/spin.min.js"></script>
+	<script src="spinner/js/angular-spinner.min.js"></script>
+	<script src="spinner/js/notificationWidget.js"></script>
 </body>
 </html>

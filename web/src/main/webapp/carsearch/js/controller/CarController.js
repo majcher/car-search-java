@@ -8,6 +8,10 @@ var CarController = function($scope, $http) {
     }
 
 	$scope.search = function(carName) {
+		if ($scope.searchForm.$invalid) {
+			return;
+		}
+
 		$http.get('core/cars/search?name='+carName).success(function(carList){
 			$scope.cars = carList;
 		});

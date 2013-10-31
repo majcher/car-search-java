@@ -1,0 +1,5 @@
+cluster:
+  name: carsearch
+path:
+  logs: ./elasticsearch/logs/
+  data: ./elasticsearch/data/

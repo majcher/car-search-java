@@ -5,15 +5,15 @@ import org.jbehave.web.selenium.WebDriverProvider;
 public class Pages {
 
 	private WebDriverProvider driverProvider;
-	private CarSearch carSearch;
+	private CarSearchPage carSearch;
 
 	public Pages(WebDriverProvider driverProvider) {
 		this.driverProvider = driverProvider;
 	}
 
-	public CarSearch carSearch() {
+	public CarSearchPage carSearch() {
 		if (carSearch == null) {
-			carSearch = new CarSearch(driverProvider);
+			carSearch = new CarSearchPage(driverProvider);
 		}
 		return carSearch;
 	}
