@@ -8,7 +8,6 @@ project(':web') {
 
         testCompile 'org.jbehave:jbehave-core:3.8'
         testCompile 'org.jbehave.web:jbehave-web-selenium:3.6-beta-1'
-        testCompile 'org.easytesting:fest-assert-core:2.0M10'
     }
 
     test {

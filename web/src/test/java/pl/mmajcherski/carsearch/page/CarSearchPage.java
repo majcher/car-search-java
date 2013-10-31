@@ -4,8 +4,6 @@ import org.jbehave.web.selenium.WebDriverProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.concurrent.TimeUnit;
-
 public class CarSearchPage extends AbstractPage {
 
 	public CarSearchPage(WebDriverProvider driverProvider) {
@@ -14,6 +12,8 @@ public class CarSearchPage extends AbstractPage {
 
 	public void open() {
 		get("http://localhost:8080/");
+
+		waitForSpinnerToDisappear();
 	}
 
 	public void carsMenu() {
@@ -26,6 +26,8 @@ public class CarSearchPage extends AbstractPage {
 
 	public void search() {
 		findElement(By.id("search-button")).click();
+
+		waitForSpinnerToDisappear();
 	}
 
 	public int getFoundCarsSize() {

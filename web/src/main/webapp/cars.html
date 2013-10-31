@@ -18,7 +18,7 @@
     No cars found
 </div>
 
-<div class="panel panel-default" ng-show="cars.length > 0">
+<div id="carSearchResultPanel" class="panel panel-default" ng-show="cars.length > 0">
 	<div class="panel-heading">
 		<h4>Car list</h4>
 	</div>
@@ -40,7 +40,7 @@
 					<span class="car-color">{{car.color}}</span>
 				</div>
 				<div class="col-md-2">
-					<span class="car-price">{{car.price.value}} {{car.price.currency}}</span>
+					<span class="car-price">{{car.price.value | number:0}} {{car.price.currency}}</span>
 				</div>
 			</div>
 		</div>
