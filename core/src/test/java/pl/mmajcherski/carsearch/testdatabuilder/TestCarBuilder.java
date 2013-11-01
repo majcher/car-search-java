@@ -1,10 +1,6 @@
 package pl.mmajcherski.carsearch.testdatabuilder;
 
 import pl.mmajcherski.carsearch.domain.model.car.Car;
-import pl.mmajcherski.carsearch.domain.model.car.CarId;
-import pl.mmajcherski.carsearch.domain.model.common.Money;
-
-import java.math.BigDecimal;
 
 public final class TestCarBuilder {
 
@@ -16,11 +12,11 @@ public final class TestCarBuilder {
 
     public Car build() {
         return new Car.Builder()
-                .setId(new CarId(1L))
-                .setMake("Ford")
-                .setModel("Mustang")
-                .setColor("Red")
-                .setPrice(new Money(BigDecimal.valueOf(23000), "USD"))
+                .withId(1L)
+                .withMake("Ford")
+                .withModel("Mustang")
+                .withColor("Red")
+                .withPrice(28999, "EUR")
                 .build();
     }
 }

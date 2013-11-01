@@ -1,15 +1,18 @@
 package pl.mmajcherski.carsearch.domain.model.common;
 
+import com.google.common.base.Objects;
+
 import java.math.BigDecimal;
+import java.util.Currency;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class Money {
 
     private final BigDecimal value;
-    private final String currency;
+    private final Currency currency;
 
-    public Money(BigDecimal value, String currency) {
+    public Money(BigDecimal value, Currency currency) {
         checkNotNull(value);
         checkNotNull(currency);
 
@@ -21,7 +24,7 @@ public final class Money {
         return value;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
@@ -31,25 +34,20 @@ public final class Money {
         if (o == null || getClass() != o.getClass()) return false;
 
         Money money = (Money) o;
-
-        if (currency != null ? !currency.equals(money.currency) : money.currency != null) return false;
-        if (value != null ? !value.equals(money.value) : money.value != null) return false;
-
-        return true;
+	    return Objects.equal(money.value, value)
+			    && Objects.equal(money.currency, currency);
     }
 
     @Override
     public int hashCode() {
-        int result = value != null ? value.hashCode() : 0;
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        return result;
+	    return Objects.hashCode(value, currency);
     }
 
-    @Override
-    public String toString() {
-        return "Money{" +
-                "value=" + value +
-                ", currency='" + currency + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this)
+				.add("value", value)
+				.add("currency", currency)
+				.toString();
+	}
 }

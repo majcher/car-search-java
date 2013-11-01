@@ -5,11 +5,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.mmajcherski.carsearch.domain.model.car.Car;
-import pl.mmajcherski.carsearch.domain.model.car.CarId;
-import pl.mmajcherski.carsearch.domain.model.common.Money;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 @Component
 public class CarJsonConverter {
@@ -40,11 +37,11 @@ public class CarJsonConverter {
             String currency = root.path("price").get("currency").asText();
 
             Car.Builder b = new Car.Builder();
-            b.setId(new CarId(id));
-            b.setMake(make);
-            b.setModel(model);
-            b.setColor(color);
-            b.setPrice(new Money(new BigDecimal(price), currency));
+            b.withId(id);
+            b.withMake(make);
+            b.withModel(model);
+            b.withColor(color);
+            b.withPrice(price, currency);
 
             return b.build();
         } catch (IOException e) {

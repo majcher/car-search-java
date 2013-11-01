@@ -69,25 +69,40 @@ public class CarSearchWebSteps {
 		carSearch.containsCarImageAtIndex(0);
 		carSearch.containsCarMakeAtIndex("Audi", 0);
 		carSearch.containsCarModelAtIndex("A4", 0);
-		carSearch.containsCarPriceAtIndex("23,000 USD", 0);
+		carSearch.containsCarPriceAtIndex("28,250 EUR", 0);
 		carSearch.containsCarColorAtIndex("British racing green", 0);
 
 		carSearch.containsCarImageAtIndex(1);
 		carSearch.containsCarMakeAtIndex("Audi", 1);
 		carSearch.containsCarModelAtIndex("A4", 1);
-		carSearch.containsCarPriceAtIndex("23,000 USD", 1);
+		carSearch.containsCarPriceAtIndex("38,480 EUR", 1);
 		carSearch.containsCarColorAtIndex("Scarlet red", 1);
 
 		delay();
 	}
 
 	@Then("the web application shows a search result page showing cars by <make> in size of <count>")
-	public void pageShouldContainSearchResultsShowingCarsByGivenBrand(@Named("make") String make, @Named("count") int count) {
+	public void pageShouldContainSearchResultsShowingCarsByGivenBrand(
+			@Named("make") String make, @Named("count") int count) {
 		int foundCarsSize = carSearch.getFoundCarsSize();
 		assertThat(foundCarsSize).isEqualTo(count);
 
 		for (int i=0; i<count; i++) {
 			carSearch.containsCarMakeAtIndex(make, i);
+		}
+
+		delay();
+	}
+
+	@Then("the web application shows a search result page showing cars <make> <model> in size of <count>")
+	public void pageShouldContainSearchResultsShowingCarsByGivenBrandAndModel(
+			@Named("make") String make, @Named("model") String model, @Named("count") int count) {
+		int foundCarsSize = carSearch.getFoundCarsSize();
+		assertThat(foundCarsSize).isEqualTo(count);
+
+		for (int i=0; i<count; i++) {
+			carSearch.containsCarMakeAtIndex(make, i);
+			carSearch.containsCarModelAtIndex(make, i);
 		}
 
 		delay();

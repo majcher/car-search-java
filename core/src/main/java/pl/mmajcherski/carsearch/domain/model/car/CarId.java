@@ -1,5 +1,7 @@
 package pl.mmajcherski.carsearch.domain.model.car;
 
+import com.google.common.base.Objects;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public final class CarId {
@@ -22,14 +24,18 @@ public final class CarId {
         if (o == null || getClass() != o.getClass()) return false;
 
         CarId carId = (CarId) o;
-
-        if (!id.equals(carId.id)) return false;
-
-        return true;
+	    return Objects.equal(carId.id, id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return Objects.hashCode(id);
     }
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this)
+				.add("id", id)
+				.toString();
+	}
 }

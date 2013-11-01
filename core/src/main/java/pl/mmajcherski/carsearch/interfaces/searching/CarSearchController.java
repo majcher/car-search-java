@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pl.mmajcherski.carsearch.domain.model.car.Car;
-import pl.mmajcherski.carsearch.domain.model.car.CarId;
 import pl.mmajcherski.carsearch.domain.model.car.CarRepository;
-import pl.mmajcherski.carsearch.domain.model.common.Money;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,39 +27,39 @@ public class CarSearchController {
 
 		List<Car> cars = new ArrayList<>();
 		cars.add(new Car.Builder()
-				.setId(new CarId(1L))
-				.setMake("Ford")
-				.setModel("Mustang")
-				.setColor("Persimmon red")
-				.setPrice(new Money(new BigDecimal(23000), "USD")).build());
+				.withId(1L)
+				.withMake("Ford")
+				.withModel("Mustang")
+				.withColor("Persimmon red")
+				.withPrice(62000, "EUR").build());
 
 		cars.add(new Car.Builder()
-				.setId(new CarId(2L))
-				.setMake("Buick")
-				.setModel("Lacrosse")
-				.setColor("Midnight blue")
-				.setPrice(new Money(new BigDecimal(23000), "USD")).build());
+				.withId(2L)
+				.withMake("Buick")
+				.withModel("Lacrosse")
+				.withColor("Midnight blue")
+				.withPrice(21800, "USD").build());
 
 		cars.add(new Car.Builder()
-				.setId(new CarId(3L))
-				.setMake("BMW")
-				.setModel("X5")
-				.setColor("Ocean blue")
-				.setPrice(new Money(new BigDecimal(23000), "USD")).build());
+				.withId(3L)
+				.withMake("BMW")
+				.withModel("X5")
+				.withColor("Ocean blue")
+				.withPrice(42625, "EUR").build());
 
 		cars.add(new Car.Builder()
-				.setId(new CarId(4L))
-				.setMake("Audi")
-				.setModel("A4")
-				.setColor("British racing green")
-				.setPrice(new Money(new BigDecimal(23000), "USD")).build());
+				.withId(4L)
+				.withMake("Audi")
+				.withModel("A4")
+				.withColor("British racing green")
+				.withPrice(28250, "EUR").build());
 
 		cars.add(new Car.Builder()
-				.setId(new CarId(5L))
-				.setMake("Audi")
-				.setModel("A4")
-				.setColor("Scarlet red")
-				.setPrice(new Money(new BigDecimal(23000), "USD")).build());
+				.withId(5L)
+				.withMake("Audi")
+				.withModel("A4")
+				.withColor("Scarlet red")
+				.withPrice(38480, "EUR").build());
 
 		for (Car car : cars) {
 			carRepository.save(car);

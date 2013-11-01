@@ -1,6 +1,10 @@
 package pl.mmajcherski.carsearch.domain.model.car;
 
+import com.google.common.base.Objects;
 import pl.mmajcherski.carsearch.domain.model.common.Money;
+
+import java.math.BigDecimal;
+import java.util.Currency;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -53,33 +57,64 @@ public final class Car {
         private String color;
         private Money price;
 
-        public Builder setId(CarId id) {
-            this.id = id;
+        public Builder withId(Long id) {
+            this.id = new CarId(id);
             return this;
         }
 
-        public Builder setMake(String make) {
+        public Builder withMake(String make) {
             this.make = make;
             return this;
         }
 
-        public Builder setModel(String model) {
+        public Builder withModel(String model) {
             this.model = model;
             return this;
         }
 
-        public Builder setColor(String color) {
+        public Builder withColor(String color) {
             this.color = color;
             return this;
         }
 
-        public Builder setPrice(Money price) {
-            this.price = price;
+        public Builder withPrice(Integer value, String currencyCode) {
+            this.price = new Money(BigDecimal.valueOf(value), Currency.getInstance(currencyCode));
             return this;
         }
+
+	    public Builder withPrice(Long value, String currencyCode) {
+		    this.price = new Money(BigDecimal.valueOf(value), Currency.getInstance(currencyCode));
+		    return this;
+	    }
+
+	    public Builder withPrice(Double value, String currencyCode) {
+		    this.price = new Money(BigDecimal.valueOf(value), Currency.getInstance(currencyCode));
+		    return this;
+	    }
 
         public Car build() {
             return new Car(id, make, model, color, price);
         }
     }
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Car car = (Car) o;
+		return Objects.equal(car.id, id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this)
+				.add("id", id)
+				.toString();
+	}
 }
