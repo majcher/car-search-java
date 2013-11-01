@@ -1,17 +1,9 @@
 package pl.mmajcherski.carsearch;
 
-import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
-import static org.jbehave.core.reporters.Format.CONSOLE;
-import static org.jbehave.core.reporters.Format.HTML;
-import static org.jbehave.core.reporters.Format.TXT;
-import static org.jbehave.core.reporters.Format.XML;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.util.concurrent.MoreExecutors;
+import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
 import org.jbehave.core.Embeddable;
 import org.jbehave.core.configuration.Configuration;
-import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.io.LoadFromClasspath;
 import org.jbehave.core.io.StoryFinder;
 import org.jbehave.core.junit.JUnitStories;
@@ -19,25 +11,22 @@ import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
 import org.jbehave.core.steps.SilentStepMonitor;
-import org.jbehave.web.selenium.ContextView;
-import org.jbehave.web.selenium.LocalFrameContextView;
-import org.jbehave.web.selenium.PerStoriesWebDriverSteps;
-import org.jbehave.web.selenium.PropertyWebDriverProvider;
-import org.jbehave.web.selenium.SeleniumConfiguration;
-import org.jbehave.web.selenium.SeleniumContext;
-import org.jbehave.web.selenium.SeleniumStepMonitor;
-import org.jbehave.web.selenium.WebDriverProvider;
-import org.jbehave.web.selenium.WebDriverScreenshotOnFailure;
-import org.jbehave.web.selenium.WebDriverSteps;
-
+import org.jbehave.web.selenium.*;
+import org.junit.runner.RunWith;
 import pl.mmajcherski.carsearch.page.Pages;
 
-import com.google.common.util.concurrent.MoreExecutors;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
+import static org.jbehave.core.reporters.Format.*;
+
+@RunWith(JUnitReportingRunner.class)
 public class CarSearchWebStoriesIntegrationTest extends JUnitStories {
 
 	private WebDriverProvider driverProvider = new PropertyWebDriverProvider();
-	private WebDriverSteps lifecycleSteps = new PerStoriesWebDriverSteps(driverProvider); // or PerStoryWebDriverSteps(driverProvider)
+	private WebDriverSteps lifecycleSteps = new PerStoriesWebDriverSteps(driverProvider);
+	//private WebDriverSteps lifecycleSteps = new PerStoryWebDriverSteps(driverProvider);
 	private Pages pages = new Pages(driverProvider);
 	private SeleniumContext context = new SeleniumContext();
 	private ContextView contextView = new LocalFrameContextView().sized(500, 100);

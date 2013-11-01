@@ -35,7 +35,6 @@ public class CarSearchWebSteps {
 
 	@When("I execute a search with more than one search result")
 	public void searchWithMoreThanOneResult() {
-		openedSearchSpecPage();
 		searchForPhrase("Audi");
 		executeSearch();
 
