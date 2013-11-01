@@ -16,7 +16,7 @@ public final class TestCarBuilder {
                 .withMake("Ford")
                 .withModel("Mustang")
                 .withColor("Red")
-                .withPrice(28999, "EUR")
+                .withPrice(28999.1, "EUR")
                 .build();
     }
 }

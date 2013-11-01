@@ -1,9 +1,11 @@
 package pl.mmajcherski.carsearch.domain.model.car;
 
 import com.google.common.base.Objects;
+import pl.mmajcherski.ddd.annotation.ValueObject;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@ValueObject
 public final class CarId {
 
     private final Long id;

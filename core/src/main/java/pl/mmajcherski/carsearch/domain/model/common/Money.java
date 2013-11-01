@@ -1,12 +1,14 @@
 package pl.mmajcherski.carsearch.domain.model.common;
 
 import com.google.common.base.Objects;
+import pl.mmajcherski.ddd.annotation.ValueObject;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@ValueObject
 public final class Money {
 
     private final BigDecimal value;

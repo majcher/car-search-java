@@ -2,12 +2,14 @@ package pl.mmajcherski.carsearch.domain.model.car;
 
 import com.google.common.base.Objects;
 import pl.mmajcherski.carsearch.domain.model.common.Money;
+import pl.mmajcherski.ddd.annotation.DomainEntity;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@DomainEntity
 public final class Car {
 
     private final CarId id;
@@ -76,16 +78,6 @@ public final class Car {
             this.color = color;
             return this;
         }
-
-        public Builder withPrice(Integer value, String currencyCode) {
-            this.price = new Money(BigDecimal.valueOf(value), Currency.getInstance(currencyCode));
-            return this;
-        }
-
-	    public Builder withPrice(Long value, String currencyCode) {
-		    this.price = new Money(BigDecimal.valueOf(value), Currency.getInstance(currencyCode));
-		    return this;
-	    }
 
 	    public Builder withPrice(Double value, String currencyCode) {
 		    this.price = new Money(BigDecimal.valueOf(value), Currency.getInstance(currencyCode));
