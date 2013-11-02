@@ -2,27 +2,26 @@ package pl.mmajcherski.carsearch.interfaces.finder.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pl.mmajcherski.carsearch.domain.model.car.Car;
 import pl.mmajcherski.carsearch.infrastructure.persistence.ElasticSearchCarFinder;
 import pl.mmajcherski.carsearch.infrastructure.persistence.ElasticSearchCarRepository;
 import pl.mmajcherski.carsearch.infrastructure.spring.CoreConfiguration;
+import pl.mmajcherski.carsearch.infrastructure.test.BaseIntegrationTest;
 import pl.mmajcherski.cqrs.query.PaginatedResult;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static pl.mmajcherski.carsearch.interfaces.finder.CarSearchCriteria.anyCar;
 import static pl.mmajcherski.carsearch.testdatabuilder.TestCarBuilder.aCar;
 
 @ContextConfiguration(classes = CoreConfiguration.class)
-public class ElasticSearchCarFinderTest extends AbstractTestNGSpringContextTests {
+public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 
-	@Autowired
-	private ElasticSearchCarRepository carRepository;
-
-	@Autowired
-	private ElasticSearchCarFinder carFinder;
+	@Autowired private ElasticSearchCarRepository carRepository;
+	@Autowired private ElasticSearchCarFinder carFinder;
 
 	private Car car;
 
@@ -32,6 +31,7 @@ public class ElasticSearchCarFinderTest extends AbstractTestNGSpringContextTests
 		car = aCar().build();
 
 		// when
+		carRepository.deleteAll();
 		carRepository.save(car);
 	}
 
@@ -44,8 +44,9 @@ public class ElasticSearchCarFinderTest extends AbstractTestNGSpringContextTests
 		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(make));
 
 		// then
+		assertThat(foundCars.getItems()).isNotEmpty();
 		Car foundCar = foundCars.getItems().get(0);
-		assertThat(foundCar).isEqualsToByComparingFields(car);
+		assertReflectionEquals(foundCar, car);
 	}
 
 	@Test(dependsOnMethods = "shouldFindSavedCarByMake")
@@ -54,10 +55,12 @@ public class ElasticSearchCarFinderTest extends AbstractTestNGSpringContextTests
 		String model = car.getModel();
 
 		// when
-		PaginatedResult<Car> foundCar = carFinder.findCars(anyCar().containingText(model));
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(model));
 
 		// then
-		assertThat(foundCar.getItems().get(0)).isEqualsToByComparingFields(car);
+		assertThat(foundCars.getItems()).isNotEmpty();
+		Car foundCar = foundCars.getItems().get(0);
+		assertReflectionEquals(foundCar, car);
 	}
 
 	@Test(dependsOnMethods = "shouldFindSavedCarByModel")
@@ -66,10 +69,12 @@ public class ElasticSearchCarFinderTest extends AbstractTestNGSpringContextTests
 		String makeAndModel = car.getMake() + " " + car.getModel();
 
 		// when
-		PaginatedResult<Car> foundCar = carFinder.findCars(anyCar().containingText(makeAndModel));
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(makeAndModel));
 
 		// then
-		assertThat(foundCar.getItems().get(0)).isEqualsToByComparingFields(car);
+		assertThat(foundCars.getItems()).isNotEmpty();
+		Car foundCar = foundCars.getItems().get(0);
+		assertReflectionEquals(foundCar, car);
 	}
 
 	@Test(dependsOnMethods = "shouldFindSavedCarByMakeAndModel")
@@ -78,10 +83,15 @@ public class ElasticSearchCarFinderTest extends AbstractTestNGSpringContextTests
 		String makeAndModel = car.getMake() + " BMW " + car.getModel();
 
 		// when
-		PaginatedResult<Car> foundCar = carFinder.findCars(anyCar().containingText(makeAndModel));
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(makeAndModel));
 
 		// then
-		assertThat(foundCar.getItems()).isEmpty();
+		assertThat(foundCars.getItems()).isEmpty();
+	}
+
+	@AfterClass
+	public void deleteDataAfterTest() {
+		carRepository.deleteAll();
 	}
 
 }

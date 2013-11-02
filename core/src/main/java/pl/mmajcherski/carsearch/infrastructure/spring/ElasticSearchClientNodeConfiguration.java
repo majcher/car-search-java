@@ -7,16 +7,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ElasticSearchConfiguration {
+public class ElasticSearchClientNodeConfiguration {
 
     @Bean
-    public Node elasticSearchNode() {
-        return NodeBuilder.nodeBuilder().node();
+    public Node elasticSearchClientNodeNode() {
+	    NodeBuilder nb = NodeBuilder.nodeBuilder().client(true);
+	    nb.settings().put("http.enabled", false);
+	    nb.settings().put("node.name", "ClientNode");
+        return nb.node();
     }
 
     @Bean
     public Client elasticSearchNodeClient() {
-        return elasticSearchNode().client();
+        return elasticSearchClientNodeNode().client();
     }
 
 }

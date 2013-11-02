@@ -1,18 +1,21 @@
 package pl.mmajcherski.carsearch.infrastructure.persistence;
 
+import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import pl.mmajcherski.carsearch.domain.model.car.Car;
 import pl.mmajcherski.carsearch.domain.model.car.CarId;
 import pl.mmajcherski.carsearch.infrastructure.spring.CoreConfiguration;
+import pl.mmajcherski.carsearch.infrastructure.test.BaseIntegrationTest;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static pl.mmajcherski.carsearch.testdatabuilder.TestCarBuilder.aCar;
 
 @ContextConfiguration(classes = CoreConfiguration.class)
-public class ElasticSearchCarRepositoryTest extends AbstractTestNGSpringContextTests {
+public class ElasticSearchCarRepositoryTest extends BaseIntegrationTest {
 
     @Autowired
     private ElasticSearchCarRepository carRepository;
@@ -25,6 +28,7 @@ public class ElasticSearchCarRepositoryTest extends AbstractTestNGSpringContextT
         car = aCar().build();
 
         // when
+	    carRepository.deleteAll();
         carRepository.save(car);
     }
 
@@ -34,10 +38,29 @@ public class ElasticSearchCarRepositoryTest extends AbstractTestNGSpringContextT
         CarId id = car.getId();
 
         // when
-        Car foundCar = carRepository.find(id);
+        Optional<Car> foundCar = carRepository.find(id);
 
         // then
-        assertThat(foundCar).isEqualsToByComparingFields(car);
+	    assertThat(foundCar.isPresent()).isTrue();
+	    assertReflectionEquals(car, foundCar.get());
     }
+
+	@Test(dependsOnMethods = "shouldFindSavedCarById")
+	public void shouldNotFindAfterDelete() {
+		// given
+		CarId id = car.getId();
+
+		// when
+		carRepository.deleteAll();
+		Optional<Car> foundCar = carRepository.find(id);
+
+		// then
+		assertThat(foundCar.isPresent()).isFalse();
+	}
+
+	@AfterClass
+	public void deleteDataAfterTest() {
+		carRepository.deleteAll();
+	}
 
 }

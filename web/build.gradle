@@ -8,16 +8,12 @@ project(':web') {
 
         testCompile 'org.jbehave:jbehave-core:3.8'
         testCompile 'org.jbehave.web:jbehave-web-selenium:3.6-beta-1'
+        testCompile 'org.jbehave:jbehave-spring:3.9-beta-2'
         testCompile 'de.codecentric:jbehave-junit-runner:1.0.1'
     }
 
     test {
-        dependsOn ":runJettyNoWait"
-
-        // reports must be disabled due to some bug in JUnitReportingRunner
-        // http://forums.gradle.org/gradle/topics/failed_to_notify_test_output_listener_in_gradle_1_4
-        reports.junitXml.enabled = false
-        reports.html.enabled = false
+        dependsOn ":runElasticSearch", ":runJettyNoWait"
     }
 
 }

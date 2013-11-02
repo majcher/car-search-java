@@ -3,9 +3,13 @@ package pl.mmajcherski.carsearch.page;
 import org.jbehave.web.selenium.WebDriverProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CarSearchPage extends AbstractPage {
 
+	@Autowired
 	public CarSearchPage(WebDriverProvider driverProvider) {
 		super(driverProvider);
 	}

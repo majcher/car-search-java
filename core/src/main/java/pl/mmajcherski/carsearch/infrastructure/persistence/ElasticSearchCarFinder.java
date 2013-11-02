@@ -25,12 +25,12 @@ import static pl.mmajcherski.carsearch.infrastructure.persistence.ElasticSearchI
 @Finder
 public class ElasticSearchCarFinder implements CarFinder {
 
-	private Client esClient;
-	private CarJsonConverter carJsonConverter;
+	private final Client client;
+	private final CarJsonConverter carJsonConverter;
 
 	@Autowired
 	public ElasticSearchCarFinder(Client esClient, CarJsonConverter carJsonConverter) {
-		this.esClient = esClient;
+		this.client = esClient;
 		this.carJsonConverter = carJsonConverter;
 	}
 
@@ -46,14 +46,14 @@ public class ElasticSearchCarFinder implements CarFinder {
 					.analyzer("whitespace")
 					.defaultOperator(QueryStringQueryBuilder.Operator.AND);
 
-		CountResponse countResponse = esClient.prepareCount(CAR.getIndex()).setTypes(CAR.getType())
+		CountResponse countResponse = client.prepareCount(CAR.getIndex()).setTypes(CAR.getType())
 				.setQuery(q)
 				.execute()
 				.actionGet();
 
 		long totalCount = countResponse.getCount();
 
-		SearchResponse searchResponse = esClient.prepareSearch(CAR.getIndex()).setTypes(CAR.getType())
+		SearchResponse searchResponse = client.prepareSearch(CAR.getIndex()).setTypes(CAR.getType())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setQuery(q)
 				.addSort(fieldSort("id.value").order(SortOrder.ASC))

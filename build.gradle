@@ -27,17 +27,30 @@ subprojects {
     }
 
     dependencies {
-        compile 'org.slf4j:slf4j-api:1.7.5'
-        compile 'org.slf4j:slf4j-simple:1.7.5'
-
         testCompile 'org.easytesting:fest-assert-core:2.0M10'
+        testCompile 'org.unitils:unitils-core:3.3'
     }
+
+    task testng(type: Test) {
+        useTestNG()
+
+        afterTest { descriptor, result ->
+            logger.lifecycle(" TestNG - ${descriptor.className}.${descriptor.name} - ${result.resultType}")
+        }
+    }
+
+    test.dependsOn testng
 
     test {
         afterTest { descriptor, result ->
-            logger.lifecycle("Executing test ${descriptor.name} [${descriptor.className}] - ${result.resultType}")
+            logger.lifecycle(" JUnit -  ${descriptor.className}.${descriptor.name} - ${result.resultType}")
         }
     }
+}
+
+task runElasticSearch(type: RunElasticSearchNodeTask) {
+    clusterName = "carsearch"
+    nodeName = "StandaloneDataNode"
 }
 
 def runJettyConfig = {
@@ -55,4 +68,8 @@ task runJetty(type: RunJettyTask) {
 task runJettyNoWait(type: RunJettyTask) {
     configure runJettyConfig
     join = false
+}
+
+task run {
+    dependsOn runElasticSearch, runJetty
 }

@@ -1,29 +1,33 @@
-package pl.mmajcherski.carsearch;
+package pl.mmajcherski.carsearch.step;
 
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Named;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import pl.mmajcherski.carsearch.domain.model.car.CarRepository;
 import pl.mmajcherski.carsearch.page.CarSearchPage;
-import pl.mmajcherski.carsearch.page.Pages;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+@Component
 public class CarSearchWebSteps {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CarSearchWebSteps.class);
 	private static final int SLEEP_AFTER_PHASE_MS = 0;
 
 	private final CarSearchPage carSearch;
+	private final CarRepository carRepository;
 
-	public CarSearchWebSteps(Pages pages) {
-		this.carSearch = pages.carSearch();
+	@Autowired
+	public CarSearchWebSteps(CarSearchPage carSearch, CarRepository carRepository) {
+		this.carSearch = carSearch;
+		this.carRepository = carRepository;
 	}
 
 	@Given("is the default data set")
 	public void defaultDataSet() {
+
 	}
 
 	@Given("an opened search specification page")
@@ -111,7 +115,7 @@ public class CarSearchWebSteps {
 		try {
 			Thread.sleep(SLEEP_AFTER_PHASE_MS);
 		} catch (InterruptedException e) {
-			LOG.error("Sleep interrupted", e);
+			Thread.currentThread().interrupt();
 		}
 	}
 
