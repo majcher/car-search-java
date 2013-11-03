@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.mmajcherski.carsearch.domain.model.car.CarRepository;
 import pl.mmajcherski.carsearch.page.CarSearchPage;
+import pl.mmajcherski.carsearch.parser.CarColorMakeModelStringParser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -47,14 +48,26 @@ public class CarSearchWebSteps {
 
 	@When("I want to search for <phrase>")
 	public void searchForPhrase(@Named("phrase") String phrase) {
+		// no-op - duplicated step
+	}
+
+	@When("I want to search for some <color> tone")
+	public void searchForColor(@Named("color") String color) {
+		// no-op - duplicated step
+	}
+
+	@When("I input <phrase>")
+	public void inputSearchPhrase(@Named("phrase") String phrase) {
 		carSearch.inputSearchText(phrase);
 
 		delay();
 	}
 
-	@When("I input <phrase>")
-	public void inputSearchPhrase(@Named("phrase") String phrase) {
-		// duplicate for #searchForPhrase()
+	@When("I input some <color> tone")
+	public void inputSearchColor(@Named("color") String color) {
+		carSearch.inputSearchText(color);
+
+		delay();
 	}
 
 	@When("I execute the search")
@@ -67,7 +80,7 @@ public class CarSearchWebSteps {
 	@Then("the page should contain for each found car the image, make, model, color and the price")
 	public void pageShouldContainAllFoundCarsDetails() throws InterruptedException {
 		int foundCarsSize = carSearch.getFoundCarsSize();
-		assertThat(foundCarsSize).isEqualTo(2);
+		assertThat(foundCarsSize).isEqualTo(5);
 
 		carSearch.containsCarImageAtIndex(0);
 		carSearch.containsCarMakeAtIndex("Audi", 0);
@@ -109,6 +122,21 @@ public class CarSearchWebSteps {
 		}
 
 		delay();
+	}
+
+	@Then("the web application shows a search result page showing list of cars: <cars>")
+	public void pageShouldContainSearchResultsShowingListOfCars(@Named("cars") String cars) {
+		String[] carsArray = cars.split(",");
+		int i = 0;
+		for (String carText : carsArray) {
+			CarColorMakeModelStringParser parser = CarColorMakeModelStringParser.forText(carText.trim());
+
+			carSearch.containsCarMakeAtIndex(parser.getMake(), i);
+			carSearch.containsCarModelAtIndex(parser.getModel(), i);
+			carSearch.containsCarColorAtIndex(parser.getColor(), i);
+
+			i++;
+		}
 	}
 
 	private void delay() {
