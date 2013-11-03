@@ -3,7 +3,7 @@ package pl.mmajcherski.carsearch.interfaces.finder.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pl.mmajcherski.carsearch.domain.model.car.Car;
 import pl.mmajcherski.carsearch.domain.model.car.CarId;
@@ -24,7 +24,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	@Autowired private ElasticSearchCarRepository carRepository;
 	@Autowired private ElasticSearchCarFinder carFinder;
 
-	@BeforeClass
+	@BeforeMethod
 	public void saveCarBeforeTest() {
 		carRepository.deleteAll();
 
@@ -50,7 +50,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		assertReflectionEquals(foundCar, car);
 	}
 
-	@Test(dependsOnMethods = "shouldFindSavedCarByMake")
+	@Test
 	public void shouldFindSavedCarByModel() {
 		// given
 		Car car = carRepository.find(new CarId(1L)).get();
@@ -65,7 +65,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		assertReflectionEquals(foundCar, car);
 	}
 
-	@Test(dependsOnMethods = "shouldFindSavedCarByModel")
+	@Test
 	public void shouldFindSavedCarByMakeAndModel() {
 		// given
 		Car car = carRepository.find(new CarId(1L)).get();
@@ -80,7 +80,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		assertReflectionEquals(foundCar, car);
 	}
 
-	@Test(dependsOnMethods = "shouldFindSavedCarByMakeAndModel")
+	@Test
 	public void shouldNotFindSavedCarByMakeAndModel() {
 		// given
 		Car car = carRepository.find(new CarId(1L)).get();
@@ -93,7 +93,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		assertThat(foundCars.getItems()).isEmpty();
 	}
 
-	@Test(dependsOnMethods = "shouldNotFindSavedCarByMakeAndModel")
+	@Test
 	public void shouldProvideOnlyCarsPerPage() {
 		// given
 		String make = "Audi";
@@ -109,7 +109,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		assertThat(foundCar.getModel()).isEqualTo("A3");
 	}
 
-	@Test(dependsOnMethods = "shouldProvideOnlyCarsPerPage")
+	@Test
 	public void shouldProvideCarsForGivenPage() {
 		// given
 		String make = "Audi";
@@ -125,7 +125,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		assertThat(foundCar.getModel()).isEqualTo("A4");
 	}
 
-	@Test(dependsOnMethods = "shouldProvideCarsForGivenPage")
+	@Test
 	public void shouldProvideTotalCarsFound() {
 		// given
 		String make = "Audi";

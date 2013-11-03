@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pl.mmajcherski.carsearch.domain.model.car.Car;
 import pl.mmajcherski.carsearch.domain.model.car.CarId;
@@ -22,17 +23,14 @@ public class ElasticSearchCarRepositoryTest extends BaseIntegrationTest {
 
     private Car car;
 
+	@BeforeMethod
+	public void cleanBeforeTest() {
+		car = aCar().build();
+		carRepository.deleteAll();
+		carRepository.save(car);
+	}
+
     @Test
-    public void shouldSaveCar() {
-        // given
-        car = aCar().build();
-
-        // when
-	    carRepository.deleteAll();
-        carRepository.save(car);
-    }
-
-    @Test(dependsOnMethods = "shouldSaveCar")
     public void shouldFindSavedCarById() {
         // given
         CarId id = car.getId();
@@ -45,7 +43,7 @@ public class ElasticSearchCarRepositoryTest extends BaseIntegrationTest {
 	    assertReflectionEquals(car, foundCar.get());
     }
 
-	@Test(dependsOnMethods = "shouldFindSavedCarById")
+	@Test
 	public void shouldNotFindAfterDelete() {
 		// given
 		CarId id = car.getId();
