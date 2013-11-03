@@ -6,6 +6,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pl.mmajcherski.carsearch.domain.model.car.Car;
+import pl.mmajcherski.carsearch.domain.model.car.CarId;
 import pl.mmajcherski.carsearch.infrastructure.persistence.ElasticSearchCarFinder;
 import pl.mmajcherski.carsearch.infrastructure.persistence.ElasticSearchCarRepository;
 import pl.mmajcherski.carsearch.infrastructure.spring.CoreConfiguration;
@@ -23,21 +24,21 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	@Autowired private ElasticSearchCarRepository carRepository;
 	@Autowired private ElasticSearchCarFinder carFinder;
 
-	private Car car;
-
 	@BeforeClass
 	public void saveCarBeforeTest() {
-		// given
-		car = aCar().build();
-
-		// when
 		carRepository.deleteAll();
-		carRepository.save(car);
+
+		carRepository.save(aCar().withId(1).withMake("Ford").withModel("Mustang").build());
+		carRepository.save(aCar().withId(2).withMake("BMW").withModel("X5").build());
+		carRepository.save(aCar().withId(3).withMake("Audi").withModel("A3").build());
+		carRepository.save(aCar().withId(4).withMake("Audi").withModel("A4").build());
+		carRepository.save(aCar().withId(5).withMake("Audi").withModel("A5").build());
 	}
 
 	@Test
 	public void shouldFindSavedCarByMake() {
 		// given
+		Car car = carRepository.find(new CarId(1L)).get();
 		String make = car.getMake();
 
 		// when
@@ -52,6 +53,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	@Test(dependsOnMethods = "shouldFindSavedCarByMake")
 	public void shouldFindSavedCarByModel() {
 		// given
+		Car car = carRepository.find(new CarId(1L)).get();
 		String model = car.getModel();
 
 		// when
@@ -66,6 +68,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	@Test(dependsOnMethods = "shouldFindSavedCarByModel")
 	public void shouldFindSavedCarByMakeAndModel() {
 		// given
+		Car car = carRepository.find(new CarId(1L)).get();
 		String makeAndModel = car.getMake() + " " + car.getModel();
 
 		// when
@@ -80,6 +83,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	@Test(dependsOnMethods = "shouldFindSavedCarByMakeAndModel")
 	public void shouldNotFindSavedCarByMakeAndModel() {
 		// given
+		Car car = carRepository.find(new CarId(1L)).get();
 		String makeAndModel = car.getMake() + " BMW " + car.getModel();
 
 		// when
@@ -87,6 +91,51 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 
 		// then
 		assertThat(foundCars.getItems()).isEmpty();
+	}
+
+	@Test(dependsOnMethods = "shouldNotFindSavedCarByMakeAndModel")
+	public void shouldProvideOnlyCarsPerPage() {
+		// given
+		String make = "Audi";
+
+		// when
+		PaginatedResult<Car> foundCars = carFinder.findCars(
+				anyCar().containingText(make).withPageSize(1).withPageNumber(0));
+
+		// then
+		assertThat(foundCars.getItems()).hasSize(1);
+		Car foundCar = foundCars.getItems().get(0);
+		assertThat(foundCar.getMake()).isEqualTo("Audi");
+		assertThat(foundCar.getModel()).isEqualTo("A3");
+	}
+
+	@Test(dependsOnMethods = "shouldProvideOnlyCarsPerPage")
+	public void shouldProvideCarsForGivenPage() {
+		// given
+		String make = "Audi";
+
+		// when
+		PaginatedResult<Car> foundCars = carFinder.findCars(
+				anyCar().containingText(make).withPageSize(1).withPageNumber(1));
+
+		// then
+		assertThat(foundCars.getItems()).hasSize(1);
+		Car foundCar = foundCars.getItems().get(0);
+		assertThat(foundCar.getMake()).isEqualTo("Audi");
+		assertThat(foundCar.getModel()).isEqualTo("A4");
+	}
+
+	@Test(dependsOnMethods = "shouldProvideCarsForGivenPage")
+	public void shouldProvideTotalCarsFound() {
+		// given
+		String make = "Audi";
+
+		// when
+		PaginatedResult<Car> foundCars = carFinder.findCars(
+				anyCar().containingText(make).withPageSize(1).withPageNumber(0));
+
+		// then
+		assertThat(foundCars.getTotalItemsCount()).isEqualTo(3);
 	}
 
 	@AfterClass
