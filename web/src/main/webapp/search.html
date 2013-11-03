@@ -1,0 +1,29 @@
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4>Search</h4>
+	</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+			<form ng-submit="search(searchCriteria)" novalidate role="form">
+				<div class="form-group">
+					<label for="search-make">Make</label>
+					<input id="search-make" type="text" ng-model="searchCriteria.make" placeholder="Make" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label for="search-model">Model</label>
+					<input id="search-model" type="text" ng-model="searchCriteria.model" placeholder="Model" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label for="search-color">Color</label>
+					<input id="search-color" type="text" ng-model="searchCriteria.color" placeholder="Color" class="form-control"/>
+				</div>
+				<div class="form-group text-right">
+					<button id="search-button" ng-disabled="searchForm.$invalid" class="btn btn-primary">Search</button>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+</div>

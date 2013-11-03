@@ -24,8 +24,16 @@ public class CarSearchPage extends AbstractPage {
 		findElement(By.linkText("Cars")).click();
 	}
 
-	public void inputSearchText(String text) {
-		findElement(By.id("search-input")).sendKeys(text);
+	public void inputSearchMake(String make) {
+		findElement(By.id("search-make")).sendKeys(make);
+	}
+
+	public void inputSearchModel(String model) {
+		findElement(By.id("search-model")).sendKeys(model);
+	}
+
+	public void inputSearchColor(String color) {
+		findElement(By.id("search-color")).sendKeys(color);
 	}
 
 	public void search() {

@@ -1,10 +1,15 @@
 package pl.mmajcherski.carsearch.interfaces.finder;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 public final class CarSearchCriteria {
 
 	public static final int UNLIMITED_PAGE_SIZE = -1;
 
-	private String text;
+	private String make;
+	private String model;
+	private String color;
+
 	private int pageNumber = 0;
 	private int pageSize = UNLIMITED_PAGE_SIZE;
 
@@ -14,8 +19,18 @@ public final class CarSearchCriteria {
 		return new CarSearchCriteria();
 	}
 
-	public CarSearchCriteria containingText(String text) {
-		this.text = text;
+	public CarSearchCriteria withMake(String make) {
+		this.make = make;
+		return this;
+	}
+
+	public CarSearchCriteria withModel(String model) {
+		this.model = model;
+		return this;
+	}
+
+	public CarSearchCriteria withColor(String color) {
+		this.color = color;
 		return this;
 	}
 
@@ -29,8 +44,16 @@ public final class CarSearchCriteria {
 		return this;
 	}
 
-	public String getText() {
-		return text;
+	public String getMake() {
+		return make;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public String getColor() {
+		return color;
 	}
 
 	public int getPageNumber() {
@@ -39,5 +62,21 @@ public final class CarSearchCriteria {
 
 	public int getPageSize() {
 		return pageSize;
+	}
+
+	public boolean isEmpty() {
+		return isNullOrEmpty(make) && isNullOrEmpty(model) && isNullOrEmpty(color);
+	}
+
+	public boolean isMakeGiven() {
+		return !isNullOrEmpty(make);
+	}
+
+	public boolean isModelGiven() {
+		return !isNullOrEmpty(model);
+	}
+
+	public boolean isColorGiven() {
+		return !isNullOrEmpty(color);
 	}
 }

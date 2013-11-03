@@ -1,16 +1,16 @@
 package pl.mmajcherski.carsearch.step;
 
-import org.jbehave.core.annotations.Given;
-import org.jbehave.core.annotations.Named;
-import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
+import org.jbehave.core.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.mmajcherski.carsearch.domain.model.car.Car;
 import pl.mmajcherski.carsearch.domain.model.car.CarRepository;
+import pl.mmajcherski.carsearch.domain.model.common.Money;
 import pl.mmajcherski.carsearch.page.CarSearchPage;
 import pl.mmajcherski.carsearch.parser.CarColorMakeModelStringParser;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static pl.mmajcherski.carsearch.testdatabuilder.TestCarBuilder.aDefaultCarDataSet;
 
 @Component
 public class CarSearchWebSteps {
@@ -28,20 +28,16 @@ public class CarSearchWebSteps {
 
 	@Given("is the default data set")
 	public void defaultDataSet() {
+		carRepository.deleteAll();
 
+		for (Car car : aDefaultCarDataSet()) {
+			carRepository.save(car);
+		}
 	}
 
 	@Given("an opened search specification page")
 	public void openedSearchSpecPage() {
 		carSearch.open();
-
-		delay();
-	}
-
-	@When("I execute a search with more than one search result")
-	public void searchWithMoreThanOneResult() {
-		searchForPhrase("Audi");
-		executeSearch();
 
 		delay();
 	}
@@ -56,21 +52,29 @@ public class CarSearchWebSteps {
 		// no-op - duplicated step
 	}
 
-	@When("I input <phrase>")
-	public void inputSearchPhrase(@Named("phrase") String phrase) {
-		carSearch.inputSearchText(phrase);
+	@When("I input car make <make>")
+	public void inputSearchMake(@Named("make") String make) {
+		carSearch.inputSearchMake(make);
+
+		delay();
+	}
+
+	@When("I input car model <model>")
+	public void inputSearchModel(@Named("model") String model) {
+		carSearch.inputSearchModel(model);
 
 		delay();
 	}
 
 	@When("I input some <color> tone")
 	public void inputSearchColor(@Named("color") String color) {
-		carSearch.inputSearchText(color);
+		carSearch.inputSearchColor(color);
 
 		delay();
 	}
 
 	@When("I execute the search")
+	@Alias("I execute a search with more than one search result")
 	public void executeSearch() {
 		carSearch.search();
 
@@ -78,33 +82,19 @@ public class CarSearchWebSteps {
 	}
 
 	@Then("the page should contain for each found car the image, make, model, color and the price")
-	public void pageShouldContainAllFoundCarsDetails() throws InterruptedException {
+	public void pageShouldContainAllFoundCarsDetails() {
 		int foundCarsSize = carSearch.getFoundCarsSize();
 		assertThat(foundCarsSize).isEqualTo(5);
 
-		carSearch.containsCarImageAtIndex(0);
-		carSearch.containsCarMakeAtIndex("Audi", 0);
-		carSearch.containsCarModelAtIndex("A4", 0);
-		carSearch.containsCarPriceAtIndex("28,250 EUR", 0);
-		carSearch.containsCarColorAtIndex("British racing green", 0);
+		int i = 0;
+		for (Car car : aDefaultCarDataSet()) {
+			carSearch.containsCarImageAtIndex(i);
+			carSearch.containsCarMakeAtIndex(car.getMake(), i);
+			carSearch.containsCarModelAtIndex(car.getModel(), i);
+			carSearch.containsCarPriceAtIndex(formatMoneyToCarPriceString(car.getPrice()), i);
+			carSearch.containsCarColorAtIndex(car.getColor(), i);
 
-		carSearch.containsCarImageAtIndex(1);
-		carSearch.containsCarMakeAtIndex("Audi", 1);
-		carSearch.containsCarModelAtIndex("A4", 1);
-		carSearch.containsCarPriceAtIndex("38,480 EUR", 1);
-		carSearch.containsCarColorAtIndex("Scarlet red", 1);
-
-		delay();
-	}
-
-	@Then("the web application shows a search result page showing cars by <make> in size of <count>")
-	public void pageShouldContainSearchResultsShowingCarsByGivenBrand(
-			@Named("make") String make, @Named("count") int count) {
-		int foundCarsSize = carSearch.getFoundCarsSize();
-		assertThat(foundCarsSize).isEqualTo(count);
-
-		for (int i=0; i<count; i++) {
-			carSearch.containsCarMakeAtIndex(make, i);
+			i++;
 		}
 
 		delay();
@@ -137,6 +127,10 @@ public class CarSearchWebSteps {
 
 			i++;
 		}
+	}
+
+	private String formatMoneyToCarPriceString(Money price) {
+		return String.format("%,.0f %s", price.getValue().doubleValue(), price.getCurrency());
 	}
 
 	private void delay() {

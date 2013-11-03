@@ -28,11 +28,25 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	public void saveCarBeforeTest() {
 		carRepository.deleteAll();
 
-		carRepository.save(aCar().withId(1).withMake("Ford").withModel("Mustang").build());
-		carRepository.save(aCar().withId(2).withMake("BMW").withModel("X5").build());
-		carRepository.save(aCar().withId(3).withMake("Audi").withModel("A3").build());
-		carRepository.save(aCar().withId(4).withMake("Audi").withModel("A4").build());
-		carRepository.save(aCar().withId(5).withMake("Audi").withModel("A5").build());
+		carRepository.save(aCar().withId(1)
+				.withMake("Ford").withModel("Mustang")
+				.withColor("Persimmon red").build());
+
+		carRepository.save(aCar().withId(2)
+				.withMake("BMW").withModel("X5")
+				.withColor("Ocean blue").build());
+
+		carRepository.save(aCar().withId(3)
+				.withMake("Audi").withModel("A3")
+				.withColor("Scarlet red").build());
+
+		carRepository.save(aCar().withId(4).
+				withMake("Audi").withModel("A4")
+				.withColor("British racing green").build());
+
+		carRepository.save(aCar().withId(5)
+				.withMake("Audi").withModel("A5")
+				.withColor("Scarlet red").build());
 	}
 
 	@Test
@@ -42,7 +56,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		String make = car.getMake();
 
 		// when
-		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(make));
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().withMake(make));
 
 		// then
 		assertThat(foundCars.getItems()).isNotEmpty();
@@ -57,7 +71,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		String model = car.getModel();
 
 		// when
-		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(model));
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().withModel(model));
 
 		// then
 		assertThat(foundCars.getItems()).isNotEmpty();
@@ -69,10 +83,11 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	public void shouldFindSavedCarByMakeAndModel() {
 		// given
 		Car car = carRepository.find(new CarId(1L)).get();
-		String makeAndModel = car.getMake() + " " + car.getModel();
+		String make = car.getMake();
+		String model = car.getModel();
 
 		// when
-		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(makeAndModel));
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().withMake(make).withModel(model));
 
 		// then
 		assertThat(foundCars.getItems()).isNotEmpty();
@@ -81,16 +96,47 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	}
 
 	@Test
-	public void shouldNotFindSavedCarByMakeAndModel() {
+	public void shouldNotFindSavedCarByMakeWithExtraWords() {
 		// given
 		Car car = carRepository.find(new CarId(1L)).get();
-		String makeAndModel = car.getMake() + " BMW " + car.getModel();
+		String make = car.getMake() + " BMW";
 
 		// when
-		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().containingText(makeAndModel));
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().withMake(make));
 
 		// then
 		assertThat(foundCars.getItems()).isEmpty();
+	}
+
+	@Test
+	public void shouldFindSavedCarsByColor() {
+		// given
+		Car redFord = carRepository.find(new CarId(1L)).get();
+		Car redAudiA3 = carRepository.find(new CarId(3L)).get();
+		Car redAudiA5 = carRepository.find(new CarId(5L)).get();
+
+		String color = "red";
+
+		// when
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().withColor(color));
+
+		// then
+		assertThat(foundCars.getItems()).contains(redFord, redAudiA3, redAudiA5);
+	}
+
+	@Test
+	public void shouldFindSavedCarsByMakeAndColor() {
+		// given
+		Car greenAudiA4 = carRepository.find(new CarId(4L)).get();
+
+		String make = "Audi";
+		String color = "green";
+
+		// when
+		PaginatedResult<Car> foundCars = carFinder.findCars(anyCar().withMake(make).withColor(color));
+
+		// then
+		assertThat(foundCars.getItems()).contains(greenAudiA4);
 	}
 
 	@Test
@@ -100,7 +146,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 
 		// when
 		PaginatedResult<Car> foundCars = carFinder.findCars(
-				anyCar().containingText(make).withPageSize(1).withPageNumber(0));
+				anyCar().withMake(make).withPageSize(1).withPageNumber(0));
 
 		// then
 		assertThat(foundCars.getItems()).hasSize(1);
@@ -116,7 +162,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 
 		// when
 		PaginatedResult<Car> foundCars = carFinder.findCars(
-				anyCar().containingText(make).withPageSize(1).withPageNumber(1));
+				anyCar().withMake(make).withPageSize(1).withPageNumber(1));
 
 		// then
 		assertThat(foundCars.getItems()).hasSize(1);
@@ -132,7 +178,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 
 		// when
 		PaginatedResult<Car> foundCars = carFinder.findCars(
-				anyCar().containingText(make).withPageSize(1).withPageNumber(0));
+				anyCar().withMake(make).withPageSize(1).withPageNumber(0));
 
 		// then
 		assertThat(foundCars.getTotalItemsCount()).isEqualTo(3);

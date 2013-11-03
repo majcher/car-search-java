@@ -6,10 +6,16 @@ var App = angular.module('CarSearchApp', ['CarSearchApp.filters', 'CarSearchApp.
 	'notificationWidget', 'angularSpinner']);
 
 App.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/cars', {
-        templateUrl: 'cars.html',
-        controller: CarController
+
+    $routeProvider.when('/search', {
+        templateUrl: 'search.html',
+        controller: 'CarSearchCriteriaController'
     });
 
-    $routeProvider.otherwise({redirectTo: '/cars'});
+	$routeProvider.when('/cars/:make/:model/:color', {
+		templateUrl: 'cars.html',
+		controller: 'CarSearchResultsController'
+	});
+
+    $routeProvider.otherwise({redirectTo: '/search'});
 }]);

@@ -10,6 +10,7 @@ project(':web') {
         testCompile 'org.jbehave.web:jbehave-web-selenium:3.6-beta-1'
         testCompile 'org.jbehave:jbehave-spring:3.9-beta-2'
         testCompile 'de.codecentric:jbehave-junit-runner:1.0.1'
+        testCompile 'org.testng:testng:6.8.5'
     }
 
     test {

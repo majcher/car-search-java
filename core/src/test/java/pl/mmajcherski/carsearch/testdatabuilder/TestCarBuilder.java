@@ -7,6 +7,7 @@ public final class TestCarBuilder {
 	private Long id = -1L;
 	private String make = "Ford";
 	private String model = "Mustang";
+	private String color = "Red";
 
 	private TestCarBuilder(){}
 
@@ -29,13 +30,19 @@ public final class TestCarBuilder {
 		return this;
 	}
 
+	public TestCarBuilder withColor(String color) {
+		this.color = color;
+		return this;
+	}
+
     public Car build() {
         return new Car.Builder()
                 .withId(id)
                 .withMake(make)
                 .withModel(model)
-                .withColor("Red")
+                .withColor(color)
                 .withPrice(28999.1, "EUR")
                 .build();
     }
+
 }

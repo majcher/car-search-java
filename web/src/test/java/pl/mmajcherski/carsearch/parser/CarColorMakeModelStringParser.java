@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public final class CarColorMakeModelStringParser {
 
-	private static final Pattern PATTERN = Pattern.compile("([A-Z][a-z0-9 ]*) ([A-Z][a-z0-9]*) ([A-Z][a-z0-9]*)");
+	private static final Pattern PATTERN = Pattern.compile("([A-Z][\\w ]*) ([A-Z][\\w]*) ([A-Z][\\w]*)");
 
 	private final String text;
 	private final Matcher matcher;

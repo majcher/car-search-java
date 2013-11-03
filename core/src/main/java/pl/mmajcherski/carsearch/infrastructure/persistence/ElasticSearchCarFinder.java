@@ -4,9 +4,9 @@ import org.elasticsearch.action.count.CountResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import pl.mmajcherski.cqrs.query.PaginatedResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
 import static pl.mmajcherski.carsearch.infrastructure.persistence.ElasticSearchIndex.CAR;
 
@@ -36,29 +37,46 @@ public class ElasticSearchCarFinder implements CarFinder {
 
 	@Override
 	public PaginatedResult<Car> findCars(CarSearchCriteria criteria) {
-		String phrase = criteria.getText();
+		final QueryBuilder q = buildQuery(criteria);
 
-		final QueryBuilder q = (phrase == null)
-				? QueryBuilders.matchAllQuery()
-				: QueryBuilders.queryString(phrase.toLowerCase())
-					.field("make")
-					.field("model")
-					.analyzer("whitespace")
-					.defaultOperator(QueryStringQueryBuilder.Operator.AND);
+		long totalCount = getTotalCount(q);
+		List<Car> cars = getCars(q, criteria.getPageNumber(), criteria.getPageSize());
 
-		CountResponse countResponse = client.prepareCount(CAR.getIndex()).setTypes(CAR.getType())
-				.setQuery(q)
-				.execute()
-				.actionGet();
+		return new PaginatedResult<Car>(cars, criteria.getPageNumber(), criteria.getPageSize(), totalCount);
+	}
 
-		long totalCount = countResponse.getCount();
+	private QueryBuilder buildQuery(CarSearchCriteria criteria) {
+		final QueryBuilder q;
 
+		if (criteria.isEmpty()) {
+			q = QueryBuilders.matchAllQuery();
+		} else {
+			BoolQueryBuilder bq = QueryBuilders.boolQuery();
+
+			if (criteria.isMakeGiven()) {
+				bq.must(termQuery("make", criteria.getMake().toLowerCase()));
+			}
+
+			if (criteria.isModelGiven()) {
+				bq.must(termQuery("model", criteria.getModel().toLowerCase()));
+			}
+
+			if (criteria.isColorGiven()) {
+				bq.must(termQuery("color", criteria.getColor().toLowerCase()));
+			}
+
+			q = bq;
+		}
+		return q;
+	}
+
+	private List<Car> getCars(QueryBuilder q, int pageNumber, int pageSize) {
 		SearchResponse searchResponse = client.prepareSearch(CAR.getIndex()).setTypes(CAR.getType())
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setQuery(q)
 				.addSort(fieldSort("id.value").order(SortOrder.ASC))
-				.setFrom(criteria.getPageNumber() * criteria.getPageSize())
-				.setSize(criteria.getPageSize())
+				.setFrom(pageNumber * pageSize)
+				.setSize(pageSize)
 				.execute()
 				.actionGet();
 
@@ -67,8 +85,16 @@ public class ElasticSearchCarFinder implements CarFinder {
 			String json = hit.getSourceAsString();
 			cars.add(carJsonConverter.fromJson(json));
 		}
+		return cars;
+	}
 
-		return new PaginatedResult<Car>(cars, criteria.getPageNumber(), criteria.getPageSize(), totalCount);
+	private long getTotalCount(QueryBuilder q) {
+		CountResponse countResponse = client.prepareCount(CAR.getIndex()).setTypes(CAR.getType())
+				.setQuery(q)
+				.execute()
+				.actionGet();
+
+		return countResponse.getCount();
 	}
 
 }

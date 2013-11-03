@@ -3,7 +3,8 @@ Scenario: Car search by make and model
 Given is the default data set
 And an opened search specification page
 When I want to search for <phrase>
-And I input <phrase>
+And I input car make <make>
+And I input car model <model>
 And I execute the search
 Then the web application shows a search result page showing cars <make> <model> in size of <count>
 
