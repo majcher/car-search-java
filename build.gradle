@@ -14,6 +14,8 @@ subprojects {
     }
 
     apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: "sonar-runner"
 
     repositories {
         mavenCentral()
@@ -43,7 +45,13 @@ subprojects {
 
     test {
         afterTest { descriptor, result ->
-            logger.lifecycle(" JUnit -  ${descriptor.className}.${descriptor.name} - ${result.resultType}")
+            logger.lifecycle(" JUnit - ${descriptor.className}.${descriptor.name} - ${result.resultType}")
+        }
+    }
+
+    sonarRunner {
+        sonarProperties {
+            property "sonar.jacoco.reportPath", "build/jacoco/testng.exec"
         }
     }
 }
