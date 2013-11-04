@@ -1,6 +1,8 @@
 package pl.mmajcherski.carsearch.infrastructure.persistence;
 
 import com.google.common.base.Optional;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
+import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +53,21 @@ public class ElasticSearchCarRepository implements CarRepository {
 
 	@Override
 	public void deleteAll() {
+		if (!indexExists(CAR.getIndex())) {
+			return;
+		}
+
 		client.prepareDeleteByQuery(CAR.getIndex())
 				.setQuery(matchAllQuery())
 				.execute()
 				.actionGet();
+	}
+
+	private boolean indexExists(String index) {
+		IndicesExistsResponse indexExistsResponse = client.admin().indices()
+				.exists(new IndicesExistsRequest(index)).actionGet();
+
+		return indexExistsResponse.isExists();
 	}
 
 }
