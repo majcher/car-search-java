@@ -9,6 +9,8 @@ import pl.mmajcherski.carsearch.domain.model.common.Money;
 import pl.mmajcherski.carsearch.page.CarSearchPage;
 import pl.mmajcherski.carsearch.parser.CarColorMakeModelStringParser;
 
+import java.util.Locale;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 import static pl.mmajcherski.carsearch.testdatabuilder.TestCarBuilder.aDefaultCarDataSet;
 
@@ -130,7 +132,7 @@ public class CarSearchWebSteps {
 	}
 
 	private String formatMoneyToCarPriceString(Money price) {
-		return String.format("%,.0f %s", price.getValue().doubleValue(), price.getCurrency());
+		return String.format(Locale.ENGLISH, "%,.0f %s", price.getValue().doubleValue(), price.getCurrency());
 	}
 
 	private void delay() {
