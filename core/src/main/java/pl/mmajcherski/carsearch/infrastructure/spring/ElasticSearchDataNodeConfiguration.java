@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 @Profile("es-server")
 public class ElasticSearchDataNodeConfiguration {
 
-    @Bean
+	@Bean(destroyMethod = "close")
     public Node elasticSearchClientNodeNode() {
         NodeBuilder nb = NodeBuilder.nodeBuilder();
 	    nb.settings().put("http.enabled", false);
