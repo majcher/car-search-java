@@ -1,4 +1,4 @@
-package pl.mmajcherski.carsearch.parser;
+package pl.mmajcherski.carsearch.story.parser;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

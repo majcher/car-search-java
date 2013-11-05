@@ -1,4 +1,4 @@
-package pl.mmajcherski.carsearch;
+package pl.mmajcherski.carsearch.story.config;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import org.jbehave.core.configuration.Configuration;
@@ -16,6 +16,9 @@ import static org.jbehave.core.reporters.Format.*;
 
 public class ConfiguredStoryEmbedder extends Embedder {
 
+	private final SeleniumContext seleniumContext = new SeleniumContext();
+	private final ContextView contextView = new LocalFrameContextView().sized(500, 100);
+
 	private Object[] stepsInstances;
 
 	public ConfiguredStoryEmbedder(Object... stepsInstances) {
@@ -26,20 +29,18 @@ public class ConfiguredStoryEmbedder extends Embedder {
 
 	@Override
 	public Configuration configuration() {
-		final SeleniumContext seleniumContext = new SeleniumContext();
-		final ContextView contextView = new LocalFrameContextView().sized(500, 100);
-		final Class<? extends Embedder> embeddableClass = this.getClass();
+		super.configuration();
 
 		final SeleniumConfiguration configuration = new SeleniumConfiguration();
 
 		configuration.useSeleniumContext(seleniumContext)
 				.useStepMonitor(new SeleniumStepMonitor(contextView, seleniumContext, new SilentStepMonitor()))
-				.useStoryLoader(new LoadFromClasspath(embeddableClass))
+				.useStoryLoader(new LoadFromClasspath(this.getClass()))
 				.usePendingStepStrategy(new FailingUponPendingStep())
 				.useStoryReporterBuilder(new StoryReporterBuilder()
-						.withCodeLocation(codeLocationFromClass(embeddableClass))
+						.withCodeLocation(codeLocationFromClass(this.getClass()))
 						.withDefaultFormats()
-						.withFormats(CONSOLE, TXT, HTML, XML));
+						.withFormats(CONSOLE, TXT, HTML, XML, new SeleniumContextStoryReporterFormat(seleniumContext)));
 
 		return configuration;
 	}

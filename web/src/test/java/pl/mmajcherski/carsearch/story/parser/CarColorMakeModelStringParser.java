@@ -1,4 +1,4 @@
-package pl.mmajcherski.carsearch.parser;
+package pl.mmajcherski.carsearch.story.parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package pl.mmajcherski.carsearch.step;
+package pl.mmajcherski.carsearch.story.step;
 
 import org.jbehave.core.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import pl.mmajcherski.carsearch.domain.model.car.Car;
 import pl.mmajcherski.carsearch.domain.model.car.CarRepository;
 import pl.mmajcherski.carsearch.domain.model.common.Money;
 import pl.mmajcherski.carsearch.page.CarSearchPage;
-import pl.mmajcherski.carsearch.parser.CarColorMakeModelStringParser;
+import pl.mmajcherski.carsearch.story.parser.CarColorMakeModelStringParser;
 
 import java.util.Locale;
 
