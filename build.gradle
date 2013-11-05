@@ -90,5 +90,5 @@ task runJettyNoWait(type: RunJettyTask) {
 }
 
 task run {
-    dependsOn runElasticSearch, runJetty
+    dependsOn runElasticSearchNoWait, runJetty
 }
