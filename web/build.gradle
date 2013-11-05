@@ -14,7 +14,7 @@ project(':web') {
     }
 
     test {
-        dependsOn ":runElasticSearch", ":runJettyNoWait"
+        dependsOn ":runElasticSearchNoWait", ":runJettyNoWait"
     }
 
 }

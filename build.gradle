@@ -41,13 +41,15 @@ subprojects {
         }
     }
 
-    test.dependsOn testng
+    testng.dependsOn ':runElasticSearchNoWait'
 
     test {
         afterTest { descriptor, result ->
             logger.lifecycle(" JUnit - ${descriptor.className}.${descriptor.name} - ${result.resultType}")
         }
     }
+
+    test.dependsOn testng
 
     sonarRunner {
         sonarProperties {
@@ -56,9 +58,18 @@ subprojects {
     }
 }
 
-task runElasticSearch(type: RunElasticSearchNodeTask) {
+def runElasticSearchConfig = {
     clusterName = "carsearch"
     nodeName = "StandaloneDataNode"
+}
+
+task runElasticSearch(type: RunElasticSearchNodeTask) {
+    configure runElasticSearchConfig
+    join = true
+}
+
+task runElasticSearchNoWait(type: RunElasticSearchNodeTask) {
+    configure runElasticSearchConfig
 }
 
 def runJettyConfig = {

@@ -9,21 +9,34 @@ class RunElasticSearchNodeTask extends DefaultTask {
 
     String clusterName;
     String nodeName;
+    boolean join;
 
     @TaskAction
-    def runJetty() {
+    def runNode() {
         logger.info('Starting ElasticSearch node...')
 
         NodeBuilder nb = NodeBuilder.nodeBuilder().data(true)
-        if (clusterName != null) {
+        if (clusterName != null)
             nb.clusterName(clusterName)
-        }
-        if (nodeName != null) {
+
+        if (nodeName != null)
             nb.settings().put("node.name", nodeName)
-        }
+
         nb.node();
 
-        logger.info('Starting ElasticSearch node started')
+        logger.info('ElasticSearch node started')
+
+        if (join)
+            blockThread()
+    }
+
+    def blockThread() {
+        Object lock = new Object()
+        while (true) {
+            synchronized (lock) {
+                lock.wait()
+            }
+        }
     }
 
 }
