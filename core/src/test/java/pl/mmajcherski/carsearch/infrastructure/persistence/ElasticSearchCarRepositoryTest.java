@@ -6,14 +6,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pl.mmajcherski.carsearch.domain.model.car.Car;
-import pl.mmajcherski.carsearch.domain.model.car.CarId;
-import pl.mmajcherski.carsearch.infrastructure.spring.CoreConfiguration;
+import pl.mmajcherski.carsearch.domain.car.model.Car;
+import pl.mmajcherski.carsearch.domain.car.model.CarId;
+import pl.mmajcherski.carsearch.infrastructure.di.spring.CoreConfiguration;
+import pl.mmajcherski.carsearch.infrastructure.persistence.elasticsearch.ElasticSearchCarRepository;
 import pl.mmajcherski.carsearch.infrastructure.test.BaseIntegrationTest;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static pl.mmajcherski.carsearch.testdatabuilder.TestCarBuilder.aCar;
+import static pl.mmajcherski.carsearch.domain.car.model.TestCarBuilder.aCar;
 
 @ContextConfiguration(classes = CoreConfiguration.class)
 public class ElasticSearchCarRepositoryTest extends BaseIntegrationTest {

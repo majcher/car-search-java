@@ -14,7 +14,7 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>pl.mmajcherski.carsearch.infrastructure.spring.WebConfiguration</param-value>
+            <param-value>pl.mmajcherski.carsearch.infrastructure.di.spring.WebConfiguration</param-value>
         </init-param>
 	    <load-on-startup>1</load-on-startup>
 	</servlet>
