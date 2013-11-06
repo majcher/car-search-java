@@ -12,6 +12,11 @@ App.config(['$routeProvider', function ($routeProvider) {
         controller: 'CarSearchCriteriaController'
     });
 
+	$routeProvider.when('/search/:make/:model/:color', {
+		templateUrl: 'search.html',
+		controller: 'CarSearchCriteriaController'
+	});
+
 	$routeProvider.when('/cars/:make/:model/:color', {
 		templateUrl: 'cars.html',
 		controller: 'CarSearchResultsController'

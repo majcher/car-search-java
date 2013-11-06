@@ -1,4 +1,13 @@
 
+<div style="margin-bottom:10px">
+	<form role="form" novalidate ng-submit="backToSearch()">
+		<button id="back-to-search-button" class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-arrow-left"></span>
+			<span>Back to search page</span>
+		</button>
+	</form>
+</div>
+
 <div id="car-search-info-message" class="alert alert-info" ng-show="cars.length == 0">
     <span>sorry, no cars found</span>
 </div>

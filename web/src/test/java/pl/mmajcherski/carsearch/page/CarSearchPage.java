@@ -40,6 +40,18 @@ public class CarSearchPage extends AbstractPage {
 		findElement(By.id("search-color")).sendKeys(color);
 	}
 
+	public String getSearchMakeInputText() {
+		return findElement(By.id("search-make")).getText();
+	}
+
+	public String getSearchModelInputText() {
+		return findElement(By.id("search-model")).getText();
+	}
+
+	public String getSearchColorInputText() {
+		return findElement(By.id("search-color")).getText();
+	}
+
 	public void search() {
 		findElement(By.id("search-button")).click();
 
@@ -86,5 +98,11 @@ public class CarSearchPage extends AbstractPage {
 		if (messageElements.size() != 1 || !messageElements.get(0).getText().contains(message)) {
 			throw new RuntimeException("No information message: '" + message + "' shown");
 		}
+	}
+
+	public void clickBackToSearchPageButton() {
+		findElement(By.id("back-to-search-button")).click();
+
+		waitForSpinnerToDisappear();
 	}
 }

@@ -45,7 +45,8 @@ public class CarSearchAcceptanceTestRunner extends AbstractTestNGSpringContextTe
 				{"carSearchByMakeAndModel.story"},
 				{"carSearchByColor.story"},
 				{"carSearchWithNoResults.story"},
-				{"carSearchWithAllSearchParametersEmpty.story"}
+				{"carSearchWithAllSearchParametersEmpty.story"},
+				{"carSearchParametersRefinement.story"}
 		};
 	}
 

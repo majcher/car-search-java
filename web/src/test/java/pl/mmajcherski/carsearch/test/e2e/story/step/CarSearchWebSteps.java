@@ -44,6 +44,19 @@ public class CarSearchWebSteps {
 		delay();
 	}
 
+	@Given("an opened search result page for parameters - make: <make> model: <model>, color: <color>")
+	public void openSearchResultPageForParameters(@Named("make") String make, @Named("model") String model, @Named("color") String color) {
+		carSearch.open();
+
+		carSearch.inputSearchMake(make);
+		carSearch.inputSearchModel(model);
+		carSearch.inputSearchColor(color);
+
+		carSearch.search();
+
+		assertThat(carSearch.getFoundCarsSize()).isGreaterThan(0);
+	}
+
 	@When("I leave all search parameters blank")
 	public void searchWithAllParamtersBlank() {
 		// no-op
@@ -86,6 +99,16 @@ public class CarSearchWebSteps {
 		carSearch.search();
 
 		delay();
+	}
+
+	@When("I want to refine search")
+	public void refineSearch() {
+		// no-op
+	}
+
+	@When("I click some kind of button to return to the search specification page")
+	public void clickBackToSearchPageButton() {
+		carSearch.clickBackToSearchPageButton();
 	}
 
 	@Then("the page should contain for each found car the image, make, model, color and the price")
@@ -141,6 +164,13 @@ public class CarSearchWebSteps {
 	public void pageShouldContainZeroCarsAndAMessage(String message) {
 		assertThat(carSearch.getFoundCarsSize()).isZero();
 		carSearch.containsInformationMessage(message);
+	}
+
+	@Then("the web application shows the search specification page with pre filled search parameters regarding the last search - make: <make> model: <model>, color: <color>")
+	public void pageShouldContainSearchFormWithFilledParams(@Named("make") String make, @Named("model") String model, @Named("color") String color) {
+		assertThat(carSearch.getSearchMakeInputText()).isEqualTo(make);
+		assertThat(carSearch.getSearchModelInputText()).isEqualTo(model);
+		assertThat(carSearch.getSearchColorInputText()).isEqualTo(color);
 	}
 
 	private String formatMoneyToCarPriceString(Money price) {
