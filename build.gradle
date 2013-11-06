@@ -33,7 +33,9 @@ subprojects {
         testCompile 'org.unitils:unitils-core:3.3'
     }
 
-    task testng(type: Test) {
+    test {
+        dependsOn ':runElasticSearchNoWait'
+
         useTestNG()
 
         afterTest { descriptor, result ->
@@ -41,22 +43,14 @@ subprojects {
         }
     }
 
-    testng.dependsOn ':runElasticSearchNoWait'
-
-    test {
-        afterTest { descriptor, result ->
-            logger.lifecycle(" JUnit - ${descriptor.className}.${descriptor.name} - ${result.resultType}")
-        }
-    }
-
-    test.dependsOn testng
-
     sonarRunner {
         sonarProperties {
             property "sonar.jacoco.reportPath", "build/jacoco/testng.exec"
         }
     }
 }
+
+// ---- ElasticSearch ---- //
 
 def runElasticSearchConfig = {
     clusterName = "carsearch"
@@ -71,6 +65,8 @@ task runElasticSearch(type: RunElasticSearchNodeTask) {
 task runElasticSearchNoWait(type: RunElasticSearchNodeTask) {
     configure runElasticSearchConfig
 }
+
+// ---- Jetty ---- //
 
 def runJettyConfig = {
     dependsOn = [":core:war", ":web:war"]
@@ -89,6 +85,14 @@ task runJettyNoWait(type: RunJettyTask) {
     join = false
 }
 
+// ---- Run ---- //
+
 task run {
     dependsOn runElasticSearchNoWait, runJetty
+}
+
+// ---- Gradle wrapper ---- //
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.8'
 }
