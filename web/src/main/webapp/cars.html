@@ -1,9 +1,9 @@
 
-<div class="alert alert-info" ng-show="cars.length == 0">
-    No cars found
+<div id="car-search-info-message" class="alert alert-info" ng-show="cars.length == 0">
+    <span>sorry, no cars found</span>
 </div>
 
-<div id="carSearchResultPanel" class="panel panel-default" ng-show="cars.length > 0">
+<div class="panel panel-default" ng-show="cars.length > 0">
 	<div class="panel-heading">
 		<h4>Car list</h4>
 	</div>

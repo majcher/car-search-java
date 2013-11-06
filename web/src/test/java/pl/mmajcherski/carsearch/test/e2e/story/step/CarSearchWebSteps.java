@@ -44,6 +44,11 @@ public class CarSearchWebSteps {
 		delay();
 	}
 
+	@When("I leave all search parameters blank")
+	public void searchWithAllParamtersBlank() {
+		// no-op
+	}
+
 	@When("I want to search for <phrase>")
 	public void searchForPhrase(@Named("phrase") String phrase) {
 		// no-op - duplicated step
@@ -84,6 +89,7 @@ public class CarSearchWebSteps {
 	}
 
 	@Then("the page should contain for each found car the image, make, model, color and the price")
+	@Alias("the web application shows a search result page containing all cars specified in the default data set")
 	public void pageShouldContainAllFoundCarsDetails() {
 		int foundCarsSize = carSearch.getFoundCarsSize();
 		assertThat(foundCarsSize).isEqualTo(5);
@@ -129,6 +135,12 @@ public class CarSearchWebSteps {
 
 			i++;
 		}
+	}
+
+	@Then("the web application shows an empty search result page with the message \"$message\"")
+	public void pageShouldContainZeroCarsAndAMessage(String message) {
+		assertThat(carSearch.getFoundCarsSize()).isZero();
+		carSearch.containsInformationMessage(message);
 	}
 
 	private String formatMoneyToCarPriceString(Money price) {

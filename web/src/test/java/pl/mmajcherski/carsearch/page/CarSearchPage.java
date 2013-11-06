@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.mmajcherski.carsearch.test.e2e.page.AbstractPage;
 
+import java.util.List;
+
 @Component
 public class CarSearchPage extends AbstractPage {
 
@@ -18,6 +20,7 @@ public class CarSearchPage extends AbstractPage {
 	public void open() {
 		get("http://localhost:8080/");
 
+		waitForLogo();
 		waitForSpinnerToDisappear();
 	}
 
@@ -78,4 +81,10 @@ public class CarSearchPage extends AbstractPage {
 		}
 	}
 
+	public void containsInformationMessage(String message) {
+		List<WebElement> messageElements = findElements(By.id("car-search-info-message"));
+		if (messageElements.size() != 1 || !messageElements.get(0).getText().contains(message)) {
+			throw new RuntimeException("No information message: '" + message + "' shown");
+		}
+	}
 }

@@ -16,6 +16,17 @@ public abstract class AbstractPage extends WebDriverPage {
 		super(driverProvider);
 	}
 
+	protected void waitForLogo() {
+		WebDriverWait wait = new WebDriverWait(getDriverProvider().get(), TIME_OUT_IN_SECONDS);
+		wait.until(new Function<WebDriver, Boolean>() {
+			@Override
+			public Boolean apply(WebDriver driver) {
+				WebElement header = driver.findElement(By.id("car-search-header"));
+				return header.isDisplayed();
+			}
+		});
+	}
+
 	protected void waitForSpinnerToDisappear() {
 		WebDriverWait wait = new WebDriverWait(getDriverProvider().get(), TIME_OUT_IN_SECONDS);
 		wait.until(new Function<WebDriver, Boolean>() {
