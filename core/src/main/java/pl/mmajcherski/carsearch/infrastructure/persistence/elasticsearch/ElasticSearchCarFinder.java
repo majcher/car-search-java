@@ -19,6 +19,7 @@ import pl.mmajcherski.carsearch.infrastructure.persistence.elasticsearch.convert
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
 
@@ -65,7 +66,7 @@ public class ElasticSearchCarFinder implements CarFinder {
 			}
 
 			if (criteria.isColorGiven()) {
-				bq.must(termQuery("color", criteria.getColor().toLowerCase()));
+				bq.must(matchQuery("color", criteria.getColor().toLowerCase()));
 			}
 
 			q = bq;

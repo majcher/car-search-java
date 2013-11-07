@@ -41,15 +41,15 @@ public class CarSearchPage extends AbstractPage {
 	}
 
 	public String getSearchMakeInputText() {
-		return findElement(By.id("search-make")).getText();
+		return findElement(By.id("search-make")).getAttribute("value");
 	}
 
 	public String getSearchModelInputText() {
-		return findElement(By.id("search-model")).getText();
+		return findElement(By.id("search-model")).getAttribute("value");
 	}
 
 	public String getSearchColorInputText() {
-		return findElement(By.id("search-color")).getText();
+		return findElement(By.id("search-color")).getAttribute("value");
 	}
 
 	public void search() {

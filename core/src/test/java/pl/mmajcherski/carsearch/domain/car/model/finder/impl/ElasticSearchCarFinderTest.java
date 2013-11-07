@@ -109,7 +109,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 	}
 
 	@Test
-	public void shouldFindSavedCarsByColor() {
+	public void shouldFindSavedCarsBySearchOnColorUsingFullTextSearch() {
 		// given
 		Car redFord = carRepository.find(new CarId(1L)).get();
 		Car redAudiA3 = carRepository.find(new CarId(3L)).get();
@@ -122,6 +122,20 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 
 		// then
 		assertThat(foundCars.getItems()).contains(redFord, redAudiA3, redAudiA5);
+	}
+	
+	@Test
+	public void shouldFindSavedCarsByColorNameUsingExactSearch() {
+		// given
+		Car redFord = carRepository.find(new CarId(1L)).get();
+
+		String color = redFord.getColor();
+
+		// when
+		PagedResult<Car> foundCars = carFinder.findCars(anyCar().withColor(color));
+
+		// then
+		assertThat(foundCars.getItems()).contains(redFord);
 	}
 
 	@Test
