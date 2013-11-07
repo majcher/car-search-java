@@ -24,16 +24,16 @@
 	<div class="list-group">
 		<div ng-repeat="car in cars" class="list-group-item">
 			<div class="row">
-				<div class="col-md-2">
-					<img class="car-image img-thumbnail img-responsive" ng-src="carsearch/img/car/{{car.id.value}}.jpg"/>
+				<div class="col-xs-3">
+                    <img class="car-image img-thumbnail img-responsive" ng-src="carsearch/img/car/{{car.id.value}}.jpg"/>
 				</div>
-				<div class="col-md-6">
+				<div class="col-xs-5">
 					<span class="car-make">{{car.make}} {{car.model}}</span>
 				</div>
-				<div class="col-md-2">
+				<div class="col-xs-2">
 					<span class="car-color">{{car.color}}</span>
 				</div>
-				<div class="col-md-2">
+				<div class="col-xs-2">
 					<span class="car-price">{{car.price.value | number:0}} {{car.price.currency}}</span>
 				</div>
 			</div>
