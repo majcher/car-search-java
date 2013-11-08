@@ -1,0 +1,11 @@
+.gradle
+.idea
+buildSrc/build
+car-search-java.iml
+car-search-java.ipr
+car-search-java.iws
+core/build
+core/core.iml
+data
+web/build/
+web/web.iml
