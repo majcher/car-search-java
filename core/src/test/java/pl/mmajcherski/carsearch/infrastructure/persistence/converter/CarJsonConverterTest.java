@@ -11,19 +11,19 @@ import static pl.mmajcherski.carsearch.domain.car.model.TestCarBuilder.aCar;
 
 public class CarJsonConverterTest {
 
-    @Autowired
-    private CarJsonConverter converter = new CarJsonConverter(new ObjectMapper());
+	@Autowired
+	private CarJsonConverter converter = new CarJsonConverter(new ObjectMapper());
 
-    @Test
-    public void shouldBeTheSameAfterTwoWayConversion() {
-	    // given
-        Car car = aCar().build();
+	@Test
+	public void shouldBeTheSameAfterTwoWayConversion() {
+		// given
+		Car car = aCar().build();
 
-	    // when
-	    String json = converter.toJson(car);
-        Car resultCar = converter.fromJson(json);
+		// when
+		String json = converter.toJson(car);
+		Car resultCar = converter.fromJson(json);
 
-	    // then
-        assertThat(resultCar).isEqualsToByComparingFields(car);
-    }
+		// then
+		assertThat(resultCar).isEqualsToByComparingFields(car);
+	}
 }

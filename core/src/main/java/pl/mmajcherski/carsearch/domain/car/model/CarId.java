@@ -8,31 +8,35 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @ValueObject
 public final class CarId {
 
-    private final Long id;
+	private final Long id;
 
-    public CarId(Long id) {
-	    checkNotNull(id);
+	public CarId(Long id) {
+		checkNotNull(id);
 
-        this.id = id;
-    }
+		this.id = id;
+	}
 
-    public Long getValue() {
-        return id;
-    }
+	public Long getValue() {
+		return id;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-        CarId carId = (CarId) o;
-	    return Objects.equal(carId.id, id);
-    }
+		CarId carId = (CarId) o;
+		return Objects.equal(carId.id, id);
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(id);
+	}
 
 	@Override
 	public String toString() {

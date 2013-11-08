@@ -11,42 +11,50 @@ import java.io.IOException;
 @Component
 public class CarJsonConverter {
 
-    private final ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
-    @Autowired
-    public CarJsonConverter(ObjectMapper mapper) {
-        this.mapper = mapper;
-    }
+	@Autowired
+	public CarJsonConverter(ObjectMapper mapper) {
+		this.mapper = mapper;
+	}
 
-    public String toJson(Car car) {
-        try {
-            return mapper.writeValueAsString(car);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	public String toJson(Car car) {
+		try {
+			return mapper.writeValueAsString(car);
+		} catch (IOException e) {
+			throw new UnknownConvertionException(e);
+		}
+	}
 
-    public Car fromJson(String json) {
-        try {
-            JsonNode root = mapper.readTree(json);
-            Long id = root.path("id").get("value").asLong();
-            String make = root.path("make").asText();
-            String model = root.path("model").asText();
-            String color = root.path("color").asText();
-            Double price = root.path("price").get("value").asDouble();
-            String currency = root.path("price").get("currency").asText();
+	public Car fromJson(String json) {
+		try {
+			JsonNode root = mapper.readTree(json);
+			Long id = root.path("id").get("value").asLong();
+			String make = root.path("make").asText();
+			String model = root.path("model").asText();
+			String color = root.path("color").asText();
+			Double price = root.path("price").get("value").asDouble();
+			String currency = root.path("price").get("currency").asText();
 
-            Car.Builder b = new Car.Builder();
-            b.withId(id);
-            b.withMake(make);
-            b.withModel(model);
-            b.withColor(color);
-            b.withPrice(price, currency);
+			Car.Builder b = new Car.Builder();
+			b.withId(id);
+			b.withMake(make);
+			b.withModel(model);
+			b.withColor(color);
+			b.withPrice(price, currency);
 
-            return b.build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+			return b.build();
+		} catch (IOException e) {
+			throw new UnknownConvertionException(e);
+		}
+	}
+
+	public static final class UnknownConvertionException extends RuntimeException {
+
+		public UnknownConvertionException(Throwable e) {
+			super(e);
+		}
+
+	}
 
 }

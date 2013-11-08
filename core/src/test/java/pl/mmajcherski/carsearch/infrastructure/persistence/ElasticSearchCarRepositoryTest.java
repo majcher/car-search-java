@@ -19,10 +19,10 @@ import static pl.mmajcherski.carsearch.domain.car.model.TestCarBuilder.aCar;
 @ContextConfiguration(classes = CoreConfiguration.class)
 public class ElasticSearchCarRepositoryTest extends BaseIntegrationTest {
 
-    @Autowired
-    private ElasticSearchCarRepository carRepository;
+	@Autowired
+	private ElasticSearchCarRepository carRepository;
 
-    private Car car;
+	private Car car;
 
 	@BeforeMethod
 	public void cleanBeforeTest() {
@@ -31,18 +31,18 @@ public class ElasticSearchCarRepositoryTest extends BaseIntegrationTest {
 		carRepository.save(car);
 	}
 
-    @Test
-    public void shouldFindSavedCarById() {
-        // given
-        CarId id = car.getId();
+	@Test
+	public void shouldFindSavedCarById() {
+		// given
+		CarId id = car.getId();
 
-        // when
-        Optional<Car> foundCar = carRepository.find(id);
+		// when
+		Optional<Car> foundCar = carRepository.find(id);
 
-        // then
-	    assertThat(foundCar.isPresent()).isTrue();
-	    assertReflectionEquals(car, foundCar.get());
-    }
+		// then
+		assertThat(foundCar.isPresent()).isTrue();
+		assertReflectionEquals(car, foundCar.get());
+	}
 
 	@Test
 	public void shouldNotFindAfterDelete() {

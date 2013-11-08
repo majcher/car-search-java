@@ -24,37 +24,39 @@ import static pl.mmajcherski.carsearch.domain.car.model.TestCarBuilder.aCar;
 @ContextConfiguration(classes = WebConfiguration.class)
 public class CarSearchControllerTest extends BaseIntegrationTest {
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    @Autowired private WebApplicationContext webApplicationContext;
-	@Autowired private CarRepository carRepository;
+	@Autowired
+	private WebApplicationContext webApplicationContext;
+	@Autowired
+	private CarRepository carRepository;
 
-    @BeforeMethod
-    public void setup() {
-        this.mockMvc = webAppContextSetup(this.webApplicationContext).build();
+	@BeforeMethod
+	public void setup() {
+		this.mockMvc = webAppContextSetup(this.webApplicationContext).build();
 
-	    carRepository.deleteAll();
-	    carRepository.save(aCar().withId(1).withMake("Ford").withModel("Mustang").withColor("Some red color").build());
-	    carRepository.save(aCar().withId(2).withMake("Audi").withModel("A4").withColor("Some blue color").build());
-	    carRepository.save(aCar().withId(3).withMake("Audi").withModel("A5").withColor("Some green color").build());
-	    carRepository.save(aCar().withId(4).withMake("Audi").withModel("A6").withColor("Some blue color").build());
-    }
+		carRepository.deleteAll();
+		carRepository.save(aCar().withId(1).withMake("Ford").withModel("Mustang").withColor("Some red color").build());
+		carRepository.save(aCar().withId(2).withMake("Audi").withModel("A4").withColor("Some blue color").build());
+		carRepository.save(aCar().withId(3).withMake("Audi").withModel("A5").withColor("Some green color").build());
+		carRepository.save(aCar().withId(4).withMake("Audi").withModel("A6").withColor("Some blue color").build());
+	}
 
-    @Test
-    public void shouldFindAllCars() throws Exception {
-        mockMvc.perform(get("/cars/search"))
-		        .andDo(print())
-                .andExpect(status().isOk())
-		        .andExpect(jsonPath("$.items", hasSize(4)))
-		        .andExpect(jsonPath("$.items[0].make").value("Ford"))
-		        .andExpect(jsonPath("$.items[0].model").value("Mustang"))
-		        .andExpect(jsonPath("$.items[1].make").value("Audi"))
-		        .andExpect(jsonPath("$.items[1].model").value("A4"))
-		        .andExpect(jsonPath("$.items[2].make").value("Audi"))
-		        .andExpect(jsonPath("$.items[2].model").value("A5"))
-	            .andExpect(jsonPath("$.items[3].make").value("Audi"))
-			    .andExpect(jsonPath("$.items[3].model").value("A6"));
-    }
+	@Test
+	public void shouldFindAllCars() throws Exception {
+		mockMvc.perform(get("/cars/search"))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.items", hasSize(4)))
+				.andExpect(jsonPath("$.items[0].make").value("Ford"))
+				.andExpect(jsonPath("$.items[0].model").value("Mustang"))
+				.andExpect(jsonPath("$.items[1].make").value("Audi"))
+				.andExpect(jsonPath("$.items[1].model").value("A4"))
+				.andExpect(jsonPath("$.items[2].make").value("Audi"))
+				.andExpect(jsonPath("$.items[2].model").value("A5"))
+				.andExpect(jsonPath("$.items[3].make").value("Audi"))
+				.andExpect(jsonPath("$.items[3].model").value("A6"));
+	}
 
 	@Test
 	public void shouldFindAllCarsByMake() throws Exception {

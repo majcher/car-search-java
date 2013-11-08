@@ -9,17 +9,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticSearchClientNodeConfiguration {
 
-    @Bean(destroyMethod = "close")
-    public Node elasticSearchClientNodeNode() {
-	    NodeBuilder nb = NodeBuilder.nodeBuilder().client(true);
-	    nb.settings().put("http.enabled", false);
-	    nb.settings().put("node.name", "ClientNode");
-        return nb.node();
-    }
+	@Bean(destroyMethod = "close")
+	public Node elasticSearchClientNodeNode() {
+		NodeBuilder nb = NodeBuilder.nodeBuilder().client(true);
+		nb.settings().put("http.enabled", false);
+		nb.settings().put("node.name", "ClientNode");
+		return nb.node();
+	}
 
 	@Bean(destroyMethod = "close")
-    public Client elasticSearchNodeClient() {
-        return elasticSearchClientNodeNode().client();
-    }
+	public Client elasticSearchNodeClient() {
+		return elasticSearchClientNodeNode().client();
+	}
 
 }

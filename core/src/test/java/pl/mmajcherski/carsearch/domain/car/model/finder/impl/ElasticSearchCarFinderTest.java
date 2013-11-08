@@ -21,8 +21,10 @@ import static pl.mmajcherski.carsearch.domain.car.service.CarFinder.SearchCriter
 @ContextConfiguration(classes = CoreConfiguration.class)
 public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 
-	@Autowired private ElasticSearchCarRepository carRepository;
-	@Autowired private ElasticSearchCarFinder carFinder;
+	@Autowired
+	private ElasticSearchCarRepository carRepository;
+	@Autowired
+	private ElasticSearchCarFinder carFinder;
 
 	@BeforeMethod
 	public void saveCarBeforeTest() {
@@ -123,7 +125,7 @@ public class ElasticSearchCarFinderTest extends BaseIntegrationTest {
 		// then
 		assertThat(foundCars.getItems()).contains(redFord, redAudiA3, redAudiA5);
 	}
-	
+
 	@Test
 	public void shouldFindSavedCarsByColorNameUsingExactSearch() {
 		// given

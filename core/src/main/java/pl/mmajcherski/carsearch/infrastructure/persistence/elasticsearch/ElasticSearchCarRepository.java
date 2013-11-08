@@ -17,39 +17,39 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 @DomainRepository
 public class ElasticSearchCarRepository implements CarRepository {
 
-    private final Client client;
-    private final CarJsonConverter carJsonConverter;
+	private final Client client;
+	private final CarJsonConverter carJsonConverter;
 
-    @Autowired
-    public ElasticSearchCarRepository(Client esClient, CarJsonConverter carJsonConverter) {
-        this.client = esClient;
-        this.carJsonConverter = carJsonConverter;
-    }
+	@Autowired
+	public ElasticSearchCarRepository(Client esClient, CarJsonConverter carJsonConverter) {
+		this.client = esClient;
+		this.carJsonConverter = carJsonConverter;
+	}
 
-    @Override
-    public Optional<Car> find(CarId id) {
-        GetResponse response = client.prepareGet(ElasticSearchIndex.CAR.getIndex(), ElasticSearchIndex.CAR.getType(), String.valueOf(id.getValue()))
-                .execute()
-                .actionGet();
+	@Override
+	public Optional<Car> find(CarId id) {
+		GetResponse response = client.prepareGet(ElasticSearchIndex.CAR.getIndex(), ElasticSearchIndex.CAR.getType(), String.valueOf(id.getValue()))
+				.execute()
+				.actionGet();
 
-	    if (!response.isExists()) {
-		    return Optional.absent();
-	    }
+		if (!response.isExists()) {
+			return Optional.absent();
+		}
 
-	    Car car = carJsonConverter.fromJson(response.getSourceAsString());
-        return Optional.of(car);
-    }
+		Car car = carJsonConverter.fromJson(response.getSourceAsString());
+		return Optional.of(car);
+	}
 
-    @Override
-    public void save(Car car) {
-        final String carJson = carJsonConverter.toJson(car);
+	@Override
+	public void save(Car car) {
+		final String carJson = carJsonConverter.toJson(car);
 
-        client.prepareIndex(ElasticSearchIndex.CAR.getIndex(), ElasticSearchIndex.CAR.getType(), String.valueOf(car.getId().getValue()))
-		        .setRefresh(true)
-                .setSource(carJson)
-                .execute()
-                .actionGet();
-    }
+		client.prepareIndex(ElasticSearchIndex.CAR.getIndex(), ElasticSearchIndex.CAR.getType(), String.valueOf(car.getId().getValue()))
+				.setRefresh(true)
+				.setSource(carJson)
+				.execute()
+				.actionGet();
+	}
 
 	@Override
 	public void deleteAll() {

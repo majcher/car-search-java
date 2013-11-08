@@ -10,12 +10,12 @@ import static org.springframework.context.annotation.ComponentScan.Filter;
 
 @Configuration
 @ComponentScan(basePackages = {"pl.mmajcherski.carsearch"},
-        excludeFilters = {@Filter(value = WebConfiguration.class, type = FilterType.ASSIGNABLE_TYPE)})
+		excludeFilters = {@Filter(value = WebConfiguration.class, type = FilterType.ASSIGNABLE_TYPE)})
 public class CoreConfiguration {
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
-    }
+	@Bean
+	public ObjectMapper objectMapper() {
+		return new ObjectMapper();
+	}
 
 }

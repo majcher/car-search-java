@@ -21,7 +21,8 @@ public interface CarFinder {
 		private int pageNumber = 0;
 		private int pageSize = UNLIMITED_PAGE_SIZE;
 
-		private SearchCriteria() {}
+		private SearchCriteria() {
+		}
 
 		public static SearchCriteria anyCar() {
 			return new SearchCriteria();

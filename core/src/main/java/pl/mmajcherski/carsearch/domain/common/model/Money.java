@@ -11,39 +11,43 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @ValueObject
 public final class Money {
 
-    private final BigDecimal value;
-    private final Currency currency;
+	private final BigDecimal value;
+	private final Currency currency;
 
-    public Money(BigDecimal value, Currency currency) {
-        checkNotNull(value);
-        checkNotNull(currency);
+	public Money(BigDecimal value, Currency currency) {
+		checkNotNull(value);
+		checkNotNull(currency);
 
-        this.value = value;
-        this.currency = currency;
-    }
+		this.value = value;
+		this.currency = currency;
+	}
 
-    public BigDecimal getValue() {
-        return value;
-    }
+	public BigDecimal getValue() {
+		return value;
+	}
 
-    public Currency getCurrency() {
-        return currency;
-    }
+	public Currency getCurrency() {
+		return currency;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-        Money money = (Money) o;
-	    return Objects.equal(money.value, value)
-			    && Objects.equal(money.currency, currency);
-    }
+		Money money = (Money) o;
+		return Objects.equal(money.value, value)
+				&& Objects.equal(money.currency, currency);
+	}
 
-    @Override
-    public int hashCode() {
-	    return Objects.hashCode(value, currency);
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(value, currency);
+	}
 
 	@Override
 	public String toString() {

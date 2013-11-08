@@ -7,11 +7,12 @@ public final class TestCarBuilder {
 	private String model = "Mustang";
 	private String color = "Red";
 
-	private TestCarBuilder(){}
+	private TestCarBuilder() {
+	}
 
-    public static TestCarBuilder aCar() {
-        return new TestCarBuilder();
-    }
+	public static TestCarBuilder aCar() {
+		return new TestCarBuilder();
+	}
 
 	public TestCarBuilder withId(int id) {
 		this.id = Long.valueOf(id);
@@ -33,14 +34,14 @@ public final class TestCarBuilder {
 		return this;
 	}
 
-    public Car build() {
-        return new Car.Builder()
-                .withId(id)
-                .withMake(make)
-                .withModel(model)
-                .withColor(color)
-                .withPrice(28999.1, "EUR")
-                .build();
-    }
+	public Car build() {
+		return new Car.Builder()
+				.withId(id)
+				.withMake(make)
+				.withModel(model)
+				.withColor(color)
+				.withPrice(28999.1, "EUR")
+				.build();
+	}
 
 }

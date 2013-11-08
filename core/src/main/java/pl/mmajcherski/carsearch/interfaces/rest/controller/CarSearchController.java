@@ -28,8 +28,8 @@ public class CarSearchController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	@ResponseBody
 	public PagedResult<Car> list(@RequestParam(value = "make", required = false) String make,
-	                                 @RequestParam(value = "model", required = false) String model,
-	                                 @RequestParam(value = "color", required = false) String color) {
+	                             @RequestParam(value = "model", required = false) String model,
+	                             @RequestParam(value = "color", required = false) String color) {
 		return carFinder.findCars(anyCar().withMake(make).withModel(model).withColor(color));
 	}
 

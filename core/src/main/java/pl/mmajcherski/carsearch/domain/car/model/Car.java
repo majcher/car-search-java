@@ -12,11 +12,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @DomainEntity
 public final class Car {
 
-    private final CarId id;
-    private final String make;
-    private final String model;
-    private final String color;
-    private final Money price;
+	private final CarId id;
+	private final String make;
+	private final String model;
+	private final String color;
+	private final Money price;
 
 	public static class Builder {
 		private CarId id;
@@ -55,44 +55,48 @@ public final class Car {
 		}
 	}
 
-    private Car(CarId id, String make, String model, String color, Money price) {
-	    checkNotNull(id);
-	    checkNotNull(make);
-	    checkNotNull(model);
-	    checkNotNull(color);
-	    checkNotNull(price);
+	private Car(CarId id, String make, String model, String color, Money price) {
+		checkNotNull(id);
+		checkNotNull(make);
+		checkNotNull(model);
+		checkNotNull(color);
+		checkNotNull(price);
 
-        this.id = id;
-        this.make = make;
-        this.model = model;
-        this.color = color;
-        this.price = price;
-    }
+		this.id = id;
+		this.make = make;
+		this.model = model;
+		this.color = color;
+		this.price = price;
+	}
 
-    public CarId getId() {
-        return id;
-    }
+	public CarId getId() {
+		return id;
+	}
 
-    public String getMake() {
-        return make;
-    }
+	public String getMake() {
+		return make;
+	}
 
-    public String getModel() {
-        return model;
-    }
+	public String getModel() {
+		return model;
+	}
 
-    public String getColor() {
-        return color;
-    }
+	public String getColor() {
+		return color;
+	}
 
-    public Money getPrice() {
-        return price;
-    }
+	public Money getPrice() {
+		return price;
+	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
 		Car car = (Car) o;
 		return Objects.equal(car.id, id);
