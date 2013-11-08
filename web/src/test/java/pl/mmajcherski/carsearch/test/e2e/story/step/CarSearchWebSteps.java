@@ -12,12 +12,10 @@ import pl.mmajcherski.carsearch.test.e2e.story.parser.CarColorMakeModelStringPar
 import java.util.Locale;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import static pl.mmajcherski.carsearch.test.e2e.testdatabuilder.TestCarBuilder.aDefaultCarDataSet;
+import static pl.mmajcherski.carsearch.poc.PocCarBuilder.aDefaultCarDataSet;
 
 @Component
 public class CarSearchWebSteps {
-
-	private static final int SLEEP_AFTER_PHASE_MS = 0;
 
 	private final CarSearchPage carSearch;
 	private final CarRepository carRepository;
@@ -40,8 +38,6 @@ public class CarSearchWebSteps {
 	@Given("an opened search specification page")
 	public void openedSearchSpecPage() {
 		carSearch.open();
-
-		delay();
 	}
 
 	@Given("an opened search result page for parameters - make: <make> model: <model>, color: <color>")
@@ -55,6 +51,11 @@ public class CarSearchWebSteps {
 		carSearch.search();
 
 		assertThat(carSearch.getFoundCarsSize()).isGreaterThan(0);
+	}
+
+	@When("I open the root of the web application in my browser")
+	public void openWebApplicationRoot() {
+		carSearch.openRootPage();
 	}
 
 	@When("I leave all search parameters blank")
@@ -75,30 +76,22 @@ public class CarSearchWebSteps {
 	@When("I input car make <make>")
 	public void inputSearchMake(@Named("make") String make) {
 		carSearch.inputSearchMake(make);
-
-		delay();
 	}
 
 	@When("I input car model <model>")
 	public void inputSearchModel(@Named("model") String model) {
 		carSearch.inputSearchModel(model);
-
-		delay();
 	}
 
 	@When("I input some <color> tone")
 	public void inputSearchColor(@Named("color") String color) {
 		carSearch.inputSearchColor(color);
-
-		delay();
 	}
 
 	@When("I execute the search")
 	@Alias("I execute a search with more than one search result")
 	public void executeSearch() {
 		carSearch.search();
-
-		delay();
 	}
 
 	@When("I want to refine search")
@@ -109,6 +102,11 @@ public class CarSearchWebSteps {
 	@When("I click some kind of button to return to the search specification page")
 	public void clickBackToSearchPageButton() {
 		carSearch.clickBackToSearchPageButton();
+	}
+
+	@Then("I want to see the search specification page")
+	public void pageSpecificationPageShouldBeShown() {
+		assertThat(carSearch.isOpen()).isTrue();
 	}
 
 	@Then("the page should contain for each found car the image, make, model, color and the price")
@@ -127,8 +125,6 @@ public class CarSearchWebSteps {
 
 			i++;
 		}
-
-		delay();
 	}
 
 	@Then("the web application shows a search result page showing cars <make> <model> in size of <count>")
@@ -141,8 +137,6 @@ public class CarSearchWebSteps {
 			carSearch.containsCarMakeAtIndex(make, i);
 			carSearch.containsCarModelAtIndex(make, i);
 		}
-
-		delay();
 	}
 
 	@Then("the web application shows a search result page showing list of cars: <cars>")
@@ -175,14 +169,6 @@ public class CarSearchWebSteps {
 
 	private String formatMoneyToCarPriceString(Money price) {
 		return String.format(Locale.ENGLISH, "%,.0f %s", price.getValue().doubleValue(), price.getCurrency());
-	}
-
-	private void delay() {
-		try {
-			Thread.sleep(SLEEP_AFTER_PHASE_MS);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
 	}
 
 }

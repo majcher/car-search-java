@@ -1,11 +1,11 @@
-package pl.mmajcherski.carsearch.test.e2e.testdatabuilder;
+package pl.mmajcherski.carsearch.poc;
 
 import pl.mmajcherski.carsearch.domain.car.model.Car;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class TestCarBuilder {
+public final class PocCarBuilder {
 
 	public static List<Car> aDefaultCarDataSet() {
 		List<Car> cars = new ArrayList<>();

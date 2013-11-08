@@ -18,10 +18,18 @@ public class CarSearchPage extends AbstractPage {
 	}
 
 	public void open() {
-		get("http://localhost:8080/");
+		get("http://localhost:8080/#/search");
 
 		waitForLogo();
 		waitForSpinnerToDisappear();
+	}
+
+	public boolean isOpen() {
+		boolean hasSearchButton = findElement(By.id("search-button")).isDisplayed();
+		boolean hasSearchByMakeInput = findElement(By.id("search-make")).isDisplayed();
+		boolean hasSearchByModelInput = findElement(By.id("search-model")).isDisplayed();
+
+		return hasSearchButton && hasSearchByMakeInput && hasSearchByModelInput;
 	}
 
 	public void carsMenu() {

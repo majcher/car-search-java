@@ -16,6 +16,13 @@ public abstract class AbstractPage extends WebDriverPage {
 		super(driverProvider);
 	}
 
+	public void openRootPage() {
+		get("http://localhost:8080/");
+
+		waitForLogo();
+		waitForSpinnerToDisappear();
+	}
+
 	protected void waitForLogo() {
 		WebDriverWait wait = new WebDriverWait(getDriverProvider().get(), TIME_OUT_IN_SECONDS);
 		wait.until(new Function<WebDriver, Boolean>() {

@@ -39,6 +39,7 @@ public class CarSearchAcceptanceTestRunner extends AbstractTestNGSpringContextTe
 	@DataProvider(name = "Acceptance test story provider")
 	public Object[][] provideAcceptanceTestsStory() {
 		return new Object[][]{
+				{"openCarSearchWebApplication.story"},
 				{"carSearchWithMoreThanOneResult.story"},
 				{"carSearchByMake.story"},
 				{"carSearchByModel.story"},
