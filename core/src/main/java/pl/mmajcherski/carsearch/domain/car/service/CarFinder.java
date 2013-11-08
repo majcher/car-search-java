@@ -7,10 +7,10 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 public interface CarFinder {
 
-	public PagedResult<Car> findCars(SearchCriteria criteria);
+	PagedResult<Car> findCars(SearchCriteria criteria);
 
 
-	public static final class SearchCriteria {
+	final class SearchCriteria {
 
 		public static final int UNLIMITED_PAGE_SIZE = -1;
 
